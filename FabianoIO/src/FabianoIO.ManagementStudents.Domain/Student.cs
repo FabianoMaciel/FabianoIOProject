@@ -9,6 +9,5 @@ namespace FabianoIO.ManagementStudents.Domain
          
         //TO DO Manipulação: Entidade Aluno gerencia diretamente suas Matrículas e 
         //Certificados.
-        //tt
     }
 }
