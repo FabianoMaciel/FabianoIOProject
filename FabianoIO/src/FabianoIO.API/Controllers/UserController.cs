@@ -5,9 +5,9 @@ namespace FabianoIO.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class StudentsController : ControllerBase
+    public class UserController : ControllerBase
     {
-        public StudentsController() { }
+        public UserController() { }
 
 
     }

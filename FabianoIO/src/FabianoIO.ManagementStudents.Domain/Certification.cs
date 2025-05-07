@@ -8,5 +8,6 @@ namespace FabianoIO.ManagementStudents.Domain
         public Guid CourseId { get; set; }
         public Guid StudentId { get; set; }
         public Course Course { get; private set; }
+        public User Student { get; private set; }
     }
 }
