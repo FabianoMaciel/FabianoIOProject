@@ -1,3 +1,5 @@
+using FabianoIO.API.Configurations;
+using FabianoIO.Core.Enums;
 using FabianoIO.ManagementStudents.Application.Commands;
 using MediatR;
 
@@ -8,6 +10,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IRequestHandler<AddUserCommand, bool>, UserCommandHandler>();
+builder.AddContext(EDatabases.SQLServer);
 
 var app = builder.Build();
 
