@@ -1,6 +1,8 @@
-﻿namespace FabianoIO.Core.Messages
+﻿using MediatR;
+
+namespace FabianoIO.Core.Messages
 {
-    public abstract class Event : Message
+    public abstract class Event : Message, INotification
     {
         public DateTime Timestamp { get; private set; }
 
