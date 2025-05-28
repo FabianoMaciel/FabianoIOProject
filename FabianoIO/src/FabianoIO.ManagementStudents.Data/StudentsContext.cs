@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-
+using FabianoIO.ManagementCourses.Domain;
 
 namespace FabianoIO.ManagementStudents.Data
 {
@@ -11,10 +11,15 @@ namespace FabianoIO.ManagementStudents.Data
     {
         public StudentsContext(DbContextOptions<StudentsContext> options) : base(options) { }
 
-        DbSet<User> Users { get; set; }
-        DbSet<Certification> Certifications { get; set; }
+        public DbSet<User> SystemUsers { get; set; }
 
-        DbSet<Registration> Registrations { get; set; }
+        public DbSet<Certification> Certifications { get; set; }
+
+        public DbSet<Registration> Registrations { get; set; }
+
+        public DbSet<Course> Courses { get; set; }
+
+        public DbSet<Lesson> Lessons { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -23,6 +28,8 @@ namespace FabianoIO.ManagementStudents.Data
             modelBuilder.ApplyConfiguration(new UserConfiguration());
             modelBuilder.ApplyConfiguration(new RegistrationConfiguration());
             modelBuilder.ApplyConfiguration(new CertificationConfiguration());
+            modelBuilder.ApplyConfiguration(new CourseConfiguration());
+            modelBuilder.ApplyConfiguration(new LessonConfiguration());
         }
         public async Task<bool> Commit()
         {
@@ -48,6 +55,24 @@ namespace FabianoIO.ManagementStudents.Data
         {
             builder.HasKey(a => a.Id);
             builder.ToTable("Users");
+        }
+    }
+
+    public class CourseConfiguration : IEntityTypeConfiguration<Course>
+    {
+        public void Configure(EntityTypeBuilder<Course> builder)
+        {
+            builder.HasKey(a => a.Id);
+            builder.ToTable("Courses");
+        }
+    }
+
+    public class LessonConfiguration : IEntityTypeConfiguration<Lesson>
+    {
+        public void Configure(EntityTypeBuilder<Lesson> builder)
+        {
+            builder.HasKey(a => a.Id);
+            builder.ToTable("Lessons");
         }
     }
 

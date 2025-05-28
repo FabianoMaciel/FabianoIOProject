@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FabianoIO.ManagementStudents.Data.Migrations
 {
     [DbContext(typeof(StudentsContext))]
-    [Migration("20250507204051_FirstMigration")]
+    [Migration("20250527211857_FirstMigration")]
     partial class FirstMigration
     {
         /// <inheritdoc />
@@ -53,7 +53,7 @@ namespace FabianoIO.ManagementStudents.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Course");
+                    b.ToTable("Courses", (string)null);
                 });
 
             modelBuilder.Entity("FabianoIO.ManagementCourses.Domain.Lesson", b =>
@@ -86,7 +86,7 @@ namespace FabianoIO.ManagementStudents.Data.Migrations
 
                     b.HasIndex("CourseId");
 
-                    b.ToTable("Lesson");
+                    b.ToTable("Lessons", (string)null);
                 });
 
             modelBuilder.Entity("FabianoIO.ManagementStudents.Domain.Certification", b =>
@@ -179,14 +179,14 @@ namespace FabianoIO.ManagementStudents.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("IsAdmin")
                         .HasColumnType("bit");
 
                     b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

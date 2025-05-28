@@ -4,13 +4,13 @@ namespace FabianoIO.ManagementCourses.Domain
 {
     public class Course : Entity, IAggregateRoot
     {
-        public Course() 
+        public Course() : base()
         { 
         }
 
-        public string Name { get; private set; }
-        public int TotalHours { get; private set; }
-        public string Description { get; private set; }
+        public string Name { get; set; }
+        public int TotalHours { get; set; }
+        public string Description { get; set; }
         private readonly List<Lesson> _lessons;
         public IReadOnlyCollection<Lesson> Lessons => _lessons;
 

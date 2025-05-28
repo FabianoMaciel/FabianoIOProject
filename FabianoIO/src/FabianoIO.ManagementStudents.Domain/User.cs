@@ -4,9 +4,19 @@ namespace FabianoIO.ManagementStudents.Domain
 {
     public class User : Entity, IAggregateRoot
     {
+        public User(Guid id, string userName, string firstName, string lastName, string email, DateTime dateOfBirth)
+          : base(id)
+        {
+            FirstName = firstName;
+            LastName = lastName;
+            DateOfBirth = dateOfBirth;
+            Email = email;
+            UserName = userName;
+        }
+
         public string UserName { get; set; } = string.Empty;
         public bool IsAdmin { get; set; }
-        public string Name { get; set; } = string.Empty;
+        public string FirstName { get; set; } = string.Empty;
 
         public string LastName { get; set; } = string.Empty;
 

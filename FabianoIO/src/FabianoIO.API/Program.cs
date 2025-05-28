@@ -1,6 +1,7 @@
 using FabianoIO.API.Configurations;
 using FabianoIO.Core.Enums;
 using FabianoIO.ManagementStudents.Application.Commands;
+using FabianoIO.ManagementStudents.Data.Seed;
 using MediatR;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -26,5 +27,6 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+app.UseDbMigrationHelper();
 
 app.Run();
