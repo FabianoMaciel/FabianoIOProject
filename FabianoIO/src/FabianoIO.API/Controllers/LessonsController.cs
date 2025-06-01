@@ -16,12 +16,9 @@ namespace FabianoIO.API.Controllers
             return Ok();
         }
 
-        [AllowAnonymous]
-        [HttpPost]
-        //[ProducesResponseType(typeof(AuthorModel), StatusCodes.Status201Created)]
-        //[ProducesResponseType(StatusCodes.Status400BadRequest)]
-        //[ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public IActionResult Post()
+        [Authorize(Roles = "ADMIN")]
+        [HttpPost("add-lesson")]
+        public IActionResult Add()
         {
             return Ok();
         }

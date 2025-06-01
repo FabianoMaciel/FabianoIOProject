@@ -1,17 +1,17 @@
 using FabianoIO.API.Configurations;
 using FabianoIO.Core.Enums;
-using FabianoIO.ManagementStudents.Application.Commands;
 using FabianoIO.ManagementStudents.Data.Seed;
-using MediatR;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 
-builder.Services.AddScoped<IRequestHandler<AddUserCommand, bool>, UserCommandHandler>();
-builder.AddContext(EDatabases.SQLServer);
+builder
+    .AddJwt()
+    .AddContext(EDatabases.SQLServer)
+    .AddRepositories()
+    .AddServices()
+    .AddSwaggerConfiguration();
 
 var app = builder.Build();
 

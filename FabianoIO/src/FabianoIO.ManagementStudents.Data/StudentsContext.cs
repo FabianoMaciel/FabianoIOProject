@@ -4,10 +4,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using FabianoIO.ManagementCourses.Domain;
+using FabianoIO.Core.Data;
 
 namespace FabianoIO.ManagementStudents.Data
 {
-    public class StudentsContext : IdentityDbContext<IdentityUser<Guid>, IdentityRole<Guid>, Guid>
+    public class StudentsContext : IdentityDbContext<IdentityUser<Guid>, IdentityRole<Guid>, Guid>, IUnitOfWork
     {
         public StudentsContext(DbContextOptions<StudentsContext> options) : base(options) { }
 

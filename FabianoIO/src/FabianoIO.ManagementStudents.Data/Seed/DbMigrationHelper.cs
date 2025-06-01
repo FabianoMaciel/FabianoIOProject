@@ -57,7 +57,7 @@ namespace FabianoIO.ManagementStudents.Data.Seed
             var ADMIN_ROLE_ID = Guid.NewGuid();
             await context.Roles.AddAsync(new IdentityRole<Guid>
             {
-                Name = "Admin",
+                Name = "ADMIN",
                 NormalizedName = "ADMIN",
                 Id = ADMIN_ROLE_ID,
                 ConcurrencyStamp = ADMIN_ROLE_ID.ToString()
@@ -251,14 +251,14 @@ namespace FabianoIO.ManagementStudents.Data.Seed
                 {
                     var lessons = new List<Lesson>
                     {
-                        new("Lesson 1", "test")
+                        new("Lesson 1", "Aula de dominios ricos 1")
                         {
                             CreatedDate = DateTime.Now,
                             Deleted = false,
                             UpdatedDate = DateTime.Now,
                             CourseId = courseDominios.Id
                         },
-                       new("Lesson 2", "test")
+                       new("Lesson 2", "Aulas de dominios ricos 2")
                         {
                             CreatedDate = DateTime.Now,
                             Deleted = false,
@@ -275,14 +275,14 @@ namespace FabianoIO.ManagementStudents.Data.Seed
                 {
                     var lessons = new List<Lesson>
                     {
-                        new("Lesson 1", "test")
+                        new("Lesson 1", "Aula de testes 1")
                         {
                             CreatedDate = DateTime.Now,
                             Deleted = false,
                             UpdatedDate = DateTime.Now,
                             CourseId = courseTests.Id
                         },
-                       new("Lesson 2", "test")
+                       new("Lesson 2", "Aula de testes 2")
                         {
                             CreatedDate = DateTime.Now,
                             Deleted = false,

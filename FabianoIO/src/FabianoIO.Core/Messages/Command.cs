@@ -3,7 +3,7 @@ using MediatR;
 
 namespace FabianoIO.Core.Messages
 {
-    public class Command : Message, IRequest<bool>
+    public abstract class Command : Message, IRequest<bool>
     {
         public DateTime TimeStamp { get; private set; }
 
@@ -14,9 +14,6 @@ namespace FabianoIO.Core.Messages
             TimeStamp = DateTime.Now;
         }
 
-        public virtual bool IsValid()
-        {
-            throw new NotImplementedException();
-        }
+        public abstract bool IsValid();
     }
 }
