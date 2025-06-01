@@ -34,7 +34,7 @@ namespace FabianoIO.API.Controllers
                 return ValidationProblem(ModelState);
             }
 
-            var result = await RegisterUser(model, model.IsAdmin ? "ADMIN" : string.Empty);
+            var result = await RegisterUser(model, model.IsAdmin ? "ADMIN" : "STUDENT");
 
             var command = new AddUserCommand(model.Email, model.IsAdmin, model.FirstName, model.LastName, model.DateOfBirth, model.Email);
             await _mediator.Send(command);

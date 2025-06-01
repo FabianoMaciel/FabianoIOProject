@@ -63,6 +63,15 @@ namespace FabianoIO.ManagementStudents.Data.Seed
                 ConcurrencyStamp = ADMIN_ROLE_ID.ToString()
             });
 
+            var STUDENT_ROLE_ID = Guid.NewGuid();
+            await context.Roles.AddAsync(new IdentityRole<Guid>
+            {
+                Name = "STUDENT",
+                NormalizedName = "STUDENT",
+                Id = STUDENT_ROLE_ID,
+                ConcurrencyStamp = STUDENT_ROLE_ID.ToString()
+            });
+
             var ADMIN_ID = Guid.NewGuid();
             var adminUser = new IdentityUser<Guid>
             {
@@ -104,7 +113,7 @@ namespace FabianoIO.ManagementStudents.Data.Seed
                 NormalizedUserName = "user1@fabianoio.com".ToUpper(),
                 NormalizedEmail = "user1@fabianoio.com".ToUpper(),
                 LockoutEnabled = true,
-                SecurityStamp = Guid.NewGuid().ToString(),
+                SecurityStamp = user1Id.ToString(),
             };
             user1.PasswordHash = ph.HashPassword(user1, "Teste@123");
             await context.Users.AddAsync(user1);
@@ -122,10 +131,23 @@ namespace FabianoIO.ManagementStudents.Data.Seed
                 NormalizedUserName = "user2@fabianoio.com".ToUpper(),
                 NormalizedEmail = "user2@fabianoio.com".ToUpper(),
                 LockoutEnabled = true,
-                SecurityStamp = Guid.NewGuid().ToString(),
+                SecurityStamp = user2Id.ToString(),
             };
             user2.PasswordHash = ph.HashPassword(user2, "Teste@123");
             await context.Users.AddAsync(user2);
+
+            await context.UserRoles.AddAsync(new IdentityUserRole<Guid>
+            {
+                RoleId = STUDENT_ROLE_ID,
+                UserId = user1Id
+            });
+
+            await context.UserRoles.AddAsync(new IdentityUserRole<Guid>
+            {
+                RoleId = STUDENT_ROLE_ID,
+                UserId = user2Id
+            });
+
 
             var systemUser2 = new User(user2.Id, user2.UserName, "User2", "User2", user2.Email, DateTime.Now.AddYears(-22));
             await context.SystemUsers.AddAsync(systemUser2);
