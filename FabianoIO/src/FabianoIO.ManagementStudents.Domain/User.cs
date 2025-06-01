@@ -4,7 +4,7 @@ namespace FabianoIO.ManagementStudents.Domain
 {
     public class User : Entity, IAggregateRoot
     {
-        public User(Guid id, string userName, string firstName, string lastName, string email, DateTime dateOfBirth)
+        public User(Guid id, string userName, string firstName, string lastName, string email, DateTime dateOfBirth, bool isAdmin)
           : base(id)
         {
             FirstName = firstName;
@@ -12,6 +12,7 @@ namespace FabianoIO.ManagementStudents.Domain
             DateOfBirth = dateOfBirth;
             Email = email;
             UserName = userName;
+            IsAdmin = isAdmin;
         }
 
         public string UserName { get; set; } = string.Empty;
