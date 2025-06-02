@@ -1,14 +1,11 @@
-﻿using FabianoIO.ManagementCourses.Domain;
+﻿using FabianoIO.ManagementCourses.Data;
+using FabianoIO.ManagementCourses.Domain;
+using FabianoIO.ManagementStudents.Data;
 using FabianoIO.ManagementStudents.Domain;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using System;
 
-namespace FabianoIO.ManagementStudents.Data.Seed
+namespace FabianoIO.API.Configurations
 {
     public static class DbMigrationHelperExtension
     {
@@ -31,22 +28,24 @@ namespace FabianoIO.ManagementStudents.Data.Seed
             var scope = serviceProvider.GetRequiredService<IServiceScopeFactory>().CreateScope();
             var env = scope.ServiceProvider.GetRequiredService<IWebHostEnvironment>();
 
-            var context = scope.ServiceProvider.GetRequiredService<StudentsContext>();
+            var studentsContext = scope.ServiceProvider.GetRequiredService<StudentsContext>();
+            var courseContext = scope.ServiceProvider.GetRequiredService<CourseContext>();
 
             if (env.IsDevelopment())
             {
-                await context.Database.MigrateAsync();
-                await EnsureSeedData(context);
+                await studentsContext.Database.MigrateAsync();
+                await courseContext.Database.MigrateAsync();
+                await EnsureSeedData(studentsContext, courseContext);
             }
         }
 
-        private static async Task EnsureSeedData(StudentsContext context)
+        private static async Task EnsureSeedData(StudentsContext studentsContext, CourseContext courseContext)
         {
-            await SeedUsers(context);
-            await SeedCourses(context);
-            await SeedLessons(context);
-            await SeedRegistrations(context);
-            await SeedCertifications(context);
+            await SeedUsers(studentsContext);
+            await SeedCourses(courseContext);
+            await SeedLessons(courseContext);
+            await SeedRegistrations(studentsContext, courseContext);
+            await SeedCertifications(studentsContext, courseContext);
         }
 
         public static async Task SeedUsers(StudentsContext context)
@@ -90,7 +89,7 @@ namespace FabianoIO.ManagementStudents.Data.Seed
             adminUser.PasswordHash = ph.HashPassword(adminUser, "Teste@123");
             await context.Users.AddAsync(adminUser);
 
-            var user = new User(adminUser.Id, adminUser.UserName, "Admin", "Admin", adminUser.Email, DateTime.Now.AddYears(-20));
+            var user = new User(adminUser.Id, adminUser.UserName, "Admin", "Admin", adminUser.Email, DateTime.Now.AddYears(-20), true);
             await context.SystemUsers.AddAsync(user);
 
             await context.UserRoles.AddAsync(new IdentityUserRole<Guid>
@@ -118,7 +117,7 @@ namespace FabianoIO.ManagementStudents.Data.Seed
             user1.PasswordHash = ph.HashPassword(user1, "Teste@123");
             await context.Users.AddAsync(user1);
 
-            var systemUser1 = new User(user1.Id, user1.UserName, "User1", "User1", user1.Email, DateTime.Now.AddYears(21));
+            var systemUser1 = new User(user1.Id, user1.UserName, "User1", "User1", user1.Email, DateTime.Now.AddYears(21), false);
             await context.SystemUsers.AddAsync(systemUser1);
 
             var user2Id = Guid.NewGuid();
@@ -149,21 +148,21 @@ namespace FabianoIO.ManagementStudents.Data.Seed
             });
 
 
-            var systemUser2 = new User(user2.Id, user2.UserName, "User2", "User2", user2.Email, DateTime.Now.AddYears(-22));
+            var systemUser2 = new User(user2.Id, user2.UserName, "User2", "User2", user2.Email, DateTime.Now.AddYears(-22), false);
             await context.SystemUsers.AddAsync(systemUser2);
 
             context.SaveChanges();
             #endregion
         }
 
-        public static async Task SeedRegistrations(StudentsContext context)
+        public static async Task SeedRegistrations(StudentsContext studentContext, CourseContext courseContext)
         {
-            if (!context.Registrations.Any())
+            if (!studentContext.Registrations.Any())
             {
-                var user1 = context.SystemUsers.FirstOrDefault(u => u.UserName.Equals("user1@fabianoio.com"));
-                var user2 = context.SystemUsers.FirstOrDefault(u => u.UserName.Equals("user2@fabianoio.com"));
-                var courseDominios = context.Courses.FirstOrDefault(u => u.Name.Equals("Modelagem de Dominios Ricos"));
-                var courseTests = context.Courses.FirstOrDefault(u => u.Name.Equals("Dominando Testes de Software"));
+                var user1 = studentContext.SystemUsers.FirstOrDefault(u => u.UserName.Equals("user1@fabianoio.com"));
+                var user2 = studentContext.SystemUsers.FirstOrDefault(u => u.UserName.Equals("user2@fabianoio.com"));
+                var courseDominios = courseContext.Courses.FirstOrDefault(u => u.Name.Equals("Modelagem de Dominios Ricos"));
+                var courseTests = courseContext.Courses.FirstOrDefault(u => u.Name.Equals("Dominando Testes de Software"));
 
                 var registrations = new List<Registration>
                 {
@@ -193,19 +192,19 @@ namespace FabianoIO.ManagementStudents.Data.Seed
                     },
                 };
 
-                await context.Registrations.AddRangeAsync(registrations);
-                context.SaveChanges();
+                await studentContext.Registrations.AddRangeAsync(registrations);
+                studentContext.SaveChanges();
             }
         }
 
-        public static async Task SeedCertifications(StudentsContext context)
+        public static async Task SeedCertifications(StudentsContext studentContext, CourseContext courseContext)
         {
-            if (!context.Certifications.Any())
+            if (!studentContext.Certifications.Any())
             {
-                var user1 = context.SystemUsers.FirstOrDefault(u => u.UserName.Equals("user1@fabianoio.com"));
-                var user2 = context.SystemUsers.FirstOrDefault(u => u.UserName.Equals("user2@fabianoio.com"));
-                var courseDominios = context.Courses.FirstOrDefault(u => u.Name.Equals("Modelagem de Dominios Ricos"));
-                var courseTests = context.Courses.FirstOrDefault(u => u.Name.Equals("Dominando Testes de Software"));
+                var user1 = studentContext.SystemUsers.FirstOrDefault(u => u.UserName.Equals("user1@fabianoio.com"));
+                var user2 = studentContext.SystemUsers.FirstOrDefault(u => u.UserName.Equals("user2@fabianoio.com"));
+                var courseDominios = courseContext.Courses.FirstOrDefault(u => u.Name.Equals("Modelagem de Dominios Ricos"));
+                var courseTests = courseContext.Courses.FirstOrDefault(u => u.Name.Equals("Dominando Testes de Software"));
 
                 var certifications = new List<Certification>
                 {
@@ -227,12 +226,12 @@ namespace FabianoIO.ManagementStudents.Data.Seed
                     },
                 };
 
-                await context.Certifications.AddRangeAsync(certifications);
-                context.SaveChanges();
+                await studentContext.Certifications.AddRangeAsync(certifications);
+                studentContext.SaveChanges();
             }
         }
 
-        public static async Task SeedCourses(StudentsContext context)
+        public static async Task SeedCourses(CourseContext context)
         {
             if (!context.Courses.Any())
             {
@@ -244,8 +243,7 @@ namespace FabianoIO.ManagementStudents.Data.Seed
                         CreatedDate = DateTime.Now,
                         Deleted = false,
                         UpdatedDate = DateTime.Now,
-                        Description = "Este e um curso sobre modelagem de dominios ricos",
-                        TotalHours = 81
+                        Description = "Este e um curso sobre modelagem de dominios ricos"
                     },
                    new()
                     {
@@ -253,8 +251,7 @@ namespace FabianoIO.ManagementStudents.Data.Seed
                         CreatedDate = DateTime.Now,
                         Deleted = false,
                         UpdatedDate = DateTime.Now,
-                        Description = "Este e um curso sobre testes de software",
-                        TotalHours = 90
+                        Description = "Este e um curso sobre testes de software"
                     },
                 };
 
@@ -263,7 +260,7 @@ namespace FabianoIO.ManagementStudents.Data.Seed
             }
         }
 
-        public static async Task SeedLessons(StudentsContext context)
+        public static async Task SeedLessons(CourseContext context)
         {
             if (!context.Lessons.Any())
             {

@@ -6,9 +6,4 @@ namespace FabianoIO.Core.Data
     {
         Task<bool> Commit();
     }
-
-    public interface IRepository<T> : IDisposable where T : IAggregateRoot
-    {
-        IUnitOfWork UnitOfWork { get; }
-    }
 }

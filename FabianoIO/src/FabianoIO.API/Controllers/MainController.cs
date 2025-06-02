@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using FabianoIO.Core.Interfaces.Services;
 using FabianoIO.Core.Notifications;
+using System.Security.Claims;
 
 namespace FabianoIO.API.Controllers
 {
@@ -12,10 +13,8 @@ namespace FabianoIO.API.Controllers
     public abstract class MainController(INotifier notifier) : ControllerBase
     {
         private readonly INotifier _notifier = notifier;
-        //public readonly IUser AppUser;
 
-        protected Guid UsuarioId { get; set; }
-        protected bool UsuarioAutenticado { get; set; }
+        protected Guid UserId => Guid.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? string.Empty);
 
         protected bool IsValid()
         {

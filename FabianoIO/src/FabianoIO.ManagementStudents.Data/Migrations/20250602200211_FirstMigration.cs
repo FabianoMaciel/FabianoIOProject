@@ -51,23 +51,6 @@ namespace FabianoIO.ManagementStudents.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Courses",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    TotalHours = table.Column<int>(type: "int", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Deleted = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Courses", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
@@ -194,29 +177,6 @@ namespace FabianoIO.ManagementStudents.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Lessons",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Subject = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CourseId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Deleted = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Lessons", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Lessons_Courses_CourseId",
-                        column: x => x.CourseId,
-                        principalTable: "Courses",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Certifications",
                 columns: table => new
                 {
@@ -230,12 +190,6 @@ namespace FabianoIO.ManagementStudents.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Certifications", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Certifications_Courses_CourseId",
-                        column: x => x.CourseId,
-                        principalTable: "Courses",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Certifications_Users_StudentId",
                         column: x => x.StudentId,
@@ -261,12 +215,6 @@ namespace FabianoIO.ManagementStudents.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Registrations", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Registrations_Courses_CourseId",
-                        column: x => x.CourseId,
-                        principalTable: "Courses",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Registrations_Users_StudentId",
                         column: x => x.StudentId,
@@ -320,24 +268,9 @@ namespace FabianoIO.ManagementStudents.Data.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Certifications_CourseId",
-                table: "Certifications",
-                column: "CourseId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Certifications_StudentId",
                 table: "Certifications",
                 column: "StudentId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Lessons_CourseId",
-                table: "Lessons",
-                column: "CourseId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Registrations_CourseId",
-                table: "Registrations",
-                column: "CourseId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Registrations_StudentId",
@@ -372,9 +305,6 @@ namespace FabianoIO.ManagementStudents.Data.Migrations
                 name: "Certifications");
 
             migrationBuilder.DropTable(
-                name: "Lessons");
-
-            migrationBuilder.DropTable(
                 name: "Registrations");
 
             migrationBuilder.DropTable(
@@ -382,9 +312,6 @@ namespace FabianoIO.ManagementStudents.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
-
-            migrationBuilder.DropTable(
-                name: "Courses");
 
             migrationBuilder.DropTable(
                 name: "Users");

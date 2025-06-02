@@ -1,4 +1,6 @@
-﻿namespace FabianoIO.Core.DomainObjects
+﻿using FabianoIO.Core.Messages;
+
+namespace FabianoIO.Core.DomainObjects
 {
     public abstract class Entity
     {
@@ -10,6 +12,11 @@
 
         public bool Deleted { get; set; }
 
+
+        private List<Event> _notifications;
+
+        public IReadOnlyCollection<Event>? Notifications => _notifications?.AsReadOnly();
+
         protected Entity()
         {
             Id = Guid.NewGuid();
@@ -18,6 +25,22 @@
         protected Entity(Guid id)
         {
             Id = id;
+        }
+
+        public void AddEvent(Event e)
+        {
+            _notifications ??= [];
+            _notifications.Add(e);
+        }
+
+        public void RemoveEvent(Event e)
+        {
+            _notifications?.Remove(e);
+        }
+
+        public void CleanEvents()
+        {
+            _notifications?.Clear();
         }
 
         public override bool Equals(object obj)

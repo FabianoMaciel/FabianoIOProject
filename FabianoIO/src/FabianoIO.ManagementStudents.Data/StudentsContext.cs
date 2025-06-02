@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using FabianoIO.ManagementCourses.Domain;
 using FabianoIO.Core.Data;
 
 namespace FabianoIO.ManagementStudents.Data
@@ -18,10 +17,6 @@ namespace FabianoIO.ManagementStudents.Data
 
         public DbSet<Registration> Registrations { get; set; }
 
-        public DbSet<Course> Courses { get; set; }
-
-        public DbSet<Lesson> Lessons { get; set; }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -29,8 +24,6 @@ namespace FabianoIO.ManagementStudents.Data
             modelBuilder.ApplyConfiguration(new UserConfiguration());
             modelBuilder.ApplyConfiguration(new RegistrationConfiguration());
             modelBuilder.ApplyConfiguration(new CertificationConfiguration());
-            modelBuilder.ApplyConfiguration(new CourseConfiguration());
-            modelBuilder.ApplyConfiguration(new LessonConfiguration());
         }
         public async Task<bool> Commit()
         {
@@ -59,24 +52,6 @@ namespace FabianoIO.ManagementStudents.Data
         }
     }
 
-    public class CourseConfiguration : IEntityTypeConfiguration<Course>
-    {
-        public void Configure(EntityTypeBuilder<Course> builder)
-        {
-            builder.HasKey(a => a.Id);
-            builder.ToTable("Courses");
-        }
-    }
-
-    public class LessonConfiguration : IEntityTypeConfiguration<Lesson>
-    {
-        public void Configure(EntityTypeBuilder<Lesson> builder)
-        {
-            builder.HasKey(a => a.Id);
-            builder.ToTable("Lessons");
-        }
-    }
-
     public class CertificationConfiguration : IEntityTypeConfiguration<Certification>
     {
         public void Configure(EntityTypeBuilder<Certification> builder)
@@ -88,11 +63,6 @@ namespace FabianoIO.ManagementStudents.Data
                  .WithMany()
                  .HasForeignKey(ct => ct.StudentId)
                  .OnDelete(DeleteBehavior.Cascade);
-
-            builder.HasOne(ct => ct.Course)
-                 .WithMany()
-                 .HasForeignKey(ct => ct.CourseId)
-                 .OnDelete(DeleteBehavior.Cascade);
         }
     }
 
@@ -102,11 +72,6 @@ namespace FabianoIO.ManagementStudents.Data
         {
             builder.HasKey(a => a.Id);
             builder.ToTable("Registrations");
-
-            builder.HasOne(r => r.Course)
-                 .WithMany()
-                 .HasForeignKey(r => r.CourseId)
-                 .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasOne(r => r.Student)
                  .WithMany()

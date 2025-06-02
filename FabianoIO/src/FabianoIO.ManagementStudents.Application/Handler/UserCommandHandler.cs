@@ -14,7 +14,7 @@ namespace FabianoIO.ManagementStudents.Application.Handler
             if (!ValidateCommand(request))
                 return false;
 
-            var user = new User(new Guid(), request.UserName, request.Name, request.LastName, request.Email, request.DateOfBirth);
+            var user = new User(new Guid(), request.UserName, request.Name, request.LastName, request.Email, request.DateOfBirth, request.IsAdmin);
 
             userRepository.Add(user);
             return await userRepository.UnitOfWork.Commit();

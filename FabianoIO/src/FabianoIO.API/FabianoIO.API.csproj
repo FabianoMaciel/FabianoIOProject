@@ -18,6 +18,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\FabianoIO.Core\FabianoIO.Core.csproj" />
+    <ProjectReference Include="..\FabianoIO.ManagementCourses.Application\FabianoIO.ManagementCourses.Application.csproj" />
+    <ProjectReference Include="..\FabianoIO.ManagementCourses.Data\FabianoIO.ManagementCourses.Data.csproj" />
     <ProjectReference Include="..\FabianoIO.ManagementStudents.Application\FabianoIO.ManagementStudents.Application.csproj" />
     <ProjectReference Include="..\FabianoIO.ManagementStudents.Data\FabianoIO.ManagementStudents.Data.csproj" />
   </ItemGroup>

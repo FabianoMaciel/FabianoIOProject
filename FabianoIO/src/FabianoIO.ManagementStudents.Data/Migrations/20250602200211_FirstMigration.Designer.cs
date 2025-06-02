@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FabianoIO.ManagementStudents.Data.Migrations
 {
     [DbContext(typeof(StudentsContext))]
-    [Migration("20250527211857_FirstMigration")]
+    [Migration("20250602200211_FirstMigration")]
     partial class FirstMigration
     {
         /// <inheritdoc />
@@ -24,70 +24,6 @@ namespace FabianoIO.ManagementStudents.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("FabianoIO.ManagementCourses.Domain.Course", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("Deleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("TotalHours")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("UpdatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Courses", (string)null);
-                });
-
-            modelBuilder.Entity("FabianoIO.ManagementCourses.Domain.Lesson", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("CourseId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("Deleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Subject")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("UpdatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CourseId");
-
-                    b.ToTable("Lessons", (string)null);
-                });
 
             modelBuilder.Entity("FabianoIO.ManagementStudents.Domain.Certification", b =>
                 {
@@ -111,8 +47,6 @@ namespace FabianoIO.ManagementStudents.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CourseId");
 
                     b.HasIndex("StudentId");
 
@@ -150,8 +84,6 @@ namespace FabianoIO.ManagementStudents.Data.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CourseId");
 
                     b.HasIndex("StudentId");
 
@@ -403,42 +335,19 @@ namespace FabianoIO.ManagementStudents.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("FabianoIO.ManagementCourses.Domain.Lesson", b =>
-                {
-                    b.HasOne("FabianoIO.ManagementCourses.Domain.Course", null)
-                        .WithMany("Lessons")
-                        .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("FabianoIO.ManagementStudents.Domain.Certification", b =>
                 {
-                    b.HasOne("FabianoIO.ManagementCourses.Domain.Course", "Course")
-                        .WithMany()
-                        .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("FabianoIO.ManagementStudents.Domain.User", "Student")
                         .WithMany()
                         .HasForeignKey("StudentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Course");
-
                     b.Navigation("Student");
                 });
 
             modelBuilder.Entity("FabianoIO.ManagementStudents.Domain.Registration", b =>
                 {
-                    b.HasOne("FabianoIO.ManagementCourses.Domain.Course", "Course")
-                        .WithMany()
-                        .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("FabianoIO.ManagementStudents.Domain.User", "Student")
                         .WithMany()
                         .HasForeignKey("StudentId")
@@ -448,8 +357,6 @@ namespace FabianoIO.ManagementStudents.Data.Migrations
                     b.HasOne("FabianoIO.ManagementStudents.Domain.User", null)
                         .WithMany("Registrations")
                         .HasForeignKey("UserId");
-
-                    b.Navigation("Course");
 
                     b.Navigation("Student");
                 });
@@ -503,11 +410,6 @@ namespace FabianoIO.ManagementStudents.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("FabianoIO.ManagementCourses.Domain.Course", b =>
-                {
-                    b.Navigation("Lessons");
                 });
 
             modelBuilder.Entity("FabianoIO.ManagementStudents.Domain.User", b =>
