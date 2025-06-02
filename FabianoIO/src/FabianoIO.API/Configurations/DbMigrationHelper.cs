@@ -270,20 +270,8 @@ namespace FabianoIO.API.Configurations
                 {
                     var lessons = new List<Lesson>
                     {
-                        new("Lesson 1", "Aula de dominios ricos 1")
-                        {
-                            CreatedDate = DateTime.Now,
-                            Deleted = false,
-                            UpdatedDate = DateTime.Now,
-                            CourseId = courseDominios.Id
-                        },
-                       new("Lesson 2", "Aulas de dominios ricos 2")
-                        {
-                            CreatedDate = DateTime.Now,
-                            Deleted = false,
-                            UpdatedDate = DateTime.Now,
-                            CourseId = courseDominios.Id
-                        },
+                        new("Lesson 1", "Aula de dominios ricos 1", 80, courseDominios.Id),
+                       new("Lesson 2", "Aulas de dominios ricos 2", 75, courseDominios.Id),
                     };
 
                     await context.Lessons.AddRangeAsync(lessons);
@@ -294,20 +282,8 @@ namespace FabianoIO.API.Configurations
                 {
                     var lessons = new List<Lesson>
                     {
-                        new("Lesson 1", "Aula de testes 1")
-                        {
-                            CreatedDate = DateTime.Now,
-                            Deleted = false,
-                            UpdatedDate = DateTime.Now,
-                            CourseId = courseTests.Id
-                        },
-                       new("Lesson 2", "Aula de testes 2")
-                        {
-                            CreatedDate = DateTime.Now,
-                            Deleted = false,
-                            UpdatedDate = DateTime.Now,
-                            CourseId = courseTests.Id
-                        },
+                       new("Lesson 1", "Aula de testes 1", 60, courseTests.Id),
+                       new("Lesson 2", "Aula de testes 2", 55, courseTests.Id)
                     };
 
                     await context.Lessons.AddRangeAsync(lessons);

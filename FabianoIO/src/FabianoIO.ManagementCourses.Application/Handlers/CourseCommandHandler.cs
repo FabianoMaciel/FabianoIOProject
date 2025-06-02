@@ -12,7 +12,7 @@ namespace FabianoIO.ManagementCourses.Application.Handlers
     {
         public async Task<bool> Handle(AddCourseCommand request, CancellationToken cancellationToken)
         {
-            if (!ValidateComando(request)) return false;
+            if (!ValidatComand(request)) return false;
 
             var course = new Course
             {
@@ -26,7 +26,7 @@ namespace FabianoIO.ManagementCourses.Application.Handlers
             return await courseRepository.UnitOfWork.Commit();
         }
 
-        private bool ValidateComando(Command command)
+        private bool ValidatComand(Command command)
         {
             if (command.IsValid()) return true;
 

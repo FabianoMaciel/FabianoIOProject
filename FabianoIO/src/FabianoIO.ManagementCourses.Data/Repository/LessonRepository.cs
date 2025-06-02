@@ -6,13 +6,18 @@ using System.Linq.Expressions;
 
 namespace FabianoIO.ManagementCourses.Data.Repository
 {
-    public class CourseRepository(CourseContext courseContext) : ICourseRepository
+    public class LessonRepository(CourseContext courseContext) : ILessonRepository
     {
-        private readonly DbSet<Course> _dbSet = courseContext.Set<Course>();
+        private readonly DbSet<Lesson> _dbSet = courseContext.Set<Lesson>();
         public IUnitOfWork UnitOfWork => courseContext;
-        public void Add(Course course)
+        public void Add(Lesson lesson)
         {
-            _dbSet.Add(course);
+            _dbSet.Add(lesson);
+        }
+
+        public Task Delete(Lesson entity)
+        {
+            throw new NotImplementedException();
         }
 
         public void Dispose()
@@ -20,7 +25,7 @@ namespace FabianoIO.ManagementCourses.Data.Repository
             throw new NotImplementedException();
         }
 
-        public async Task<IEnumerable<Course>> GetAll()
+        public async Task<IEnumerable<Lesson>> GetAll()
         {
             return await _dbSet.AsNoTracking().ToListAsync();
         }

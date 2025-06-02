@@ -26,7 +26,7 @@ namespace FabianoIO.API.Controllers
             return CustomResponse(courses);
         }
 
-        [AllowAnonymous]
+        [Authorize(Roles = "ADMIN")]
         [HttpPost("create")]
         [ProducesResponseType(typeof(CourseViewModel), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

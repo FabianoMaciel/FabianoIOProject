@@ -76,6 +76,9 @@ namespace FabianoIO.ManagementCourses.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<double>("TotalHours")
+                        .HasColumnType("float");
+
                     b.Property<DateTime>("UpdatedDate")
                         .HasColumnType("datetime2");
 

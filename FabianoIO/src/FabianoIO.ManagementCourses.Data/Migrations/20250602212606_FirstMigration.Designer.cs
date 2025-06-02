@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FabianoIO.ManagementCourses.Data.Migrations
 {
     [DbContext(typeof(CourseContext))]
-    [Migration("20250602200139_FirstMigration")]
+    [Migration("20250602212606_FirstMigration")]
     partial class FirstMigration
     {
         /// <inheritdoc />
@@ -78,6 +78,9 @@ namespace FabianoIO.ManagementCourses.Data.Migrations
                     b.Property<string>("Subject")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("TotalHours")
+                        .HasColumnType("float");
 
                     b.Property<DateTime>("UpdatedDate")
                         .HasColumnType("datetime2");

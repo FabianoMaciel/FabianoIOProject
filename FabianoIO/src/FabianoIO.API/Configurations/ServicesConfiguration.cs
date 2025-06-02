@@ -9,7 +9,6 @@ using FabianoIO.ManagementCourses.Data.Repository;
 using FabianoIO.ManagementStudents.Application.Commands;
 using FabianoIO.ManagementStudents.Data.Repository;
 using FabianoIO.ManagementStudents.Domain;
-using MediatR;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace FabianoIO.API.Configurations
@@ -20,6 +19,7 @@ namespace FabianoIO.API.Configurations
         {
             builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddScoped<ICourseRepository, CourseRepository>();
+            builder.Services.AddScoped<ILessonRepository, LessonRepository>();
 
             return builder;
         }
@@ -30,7 +30,9 @@ namespace FabianoIO.API.Configurations
             builder.Services.AddScoped<INotifier, Notifier>();
 
             builder.Services.AddScoped<ICourseQuery, CourseQuery>();
+            builder.Services.AddScoped<ILessonQuery, LessonQuery>();
             builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<AddUserCommand>());
+            builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<AddLessonCommand>());
             builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<AddCourseCommand>());
 
             builder.Services.AddHttpContextAccessor();
