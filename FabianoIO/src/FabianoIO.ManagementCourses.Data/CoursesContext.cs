@@ -1,19 +1,18 @@
-﻿using FabianoIO.ManagementCourses.Domain;
+﻿using FabianoIO.Core.Data;
+using FabianoIO.Core.DomainObjects;
+using FabianoIO.ManagementCourses.Domain;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using FabianoIO.Core.Data;
-using MediatR;
-using FabianoIO.Core.DomainObjects;
-using FabianoIO.GestaoAlunos.Data;
-using FabianoIO.Core.Messages;
 
 namespace FabianoIO.ManagementCourses.Data
 {
-    public class CourseContext(DbContextOptions<CourseContext> options,
+    public class CoursesContext(DbContextOptions<CoursesContext> options,
                                     IMediator mediator) : DbContext(options), IUnitOfWork
     {
         public DbSet<Course> Courses { get; set; }
         public DbSet<Lesson> Lessons { get; set; }
+        public DbSet<ProgressLesson> ProgressLessons { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -21,6 +20,7 @@ namespace FabianoIO.ManagementCourses.Data
 
             modelBuilder.ApplyConfiguration(new CourseConfiguration());
             modelBuilder.ApplyConfiguration(new LessonConfiguration());
+            modelBuilder.ApplyConfiguration(new ProgressLessonsConfiguration());
         }
 
         public async Task<bool> Commit()
@@ -70,6 +70,15 @@ namespace FabianoIO.ManagementCourses.Data
         {
             builder.HasKey(a => a.Id);
             builder.ToTable("Lessons");
+        }
+    }
+
+    public class ProgressLessonsConfiguration : IEntityTypeConfiguration<ProgressLesson>
+    {
+        public void Configure(EntityTypeBuilder<ProgressLesson> builder)
+        {
+            builder.HasKey(a => a.Id);
+            builder.ToTable("ProgressLessons");
         }
     }
 }

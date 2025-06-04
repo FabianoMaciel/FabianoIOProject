@@ -17,13 +17,14 @@ namespace FabianoIO.API.Controllers
                                 INotifier notifier) : MainController(notifier)
     {
         [AllowAnonymous]
-        [HttpGet("getall")]
+        [HttpGet("get-all")]
         [ProducesResponseType(typeof(IEnumerable<LessonViewModel>), StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<LessonViewModel>>> GetAll()
         {
             var lessons = await lessonQuery.GetAll();
             return CustomResponse(lessons);
         }
+
         [Authorize(Roles = "ADMIN")]
         [HttpPost("add-lesson")]
         [ProducesResponseType(typeof(CourseViewModel), StatusCodes.Status201Created)]
@@ -36,6 +37,15 @@ namespace FabianoIO.API.Controllers
             await _mediator.Send(command);
 
             return CustomResponse(HttpStatusCode.Created); ;
+        }
+
+        [AllowAnonymous]
+        [HttpGet("get-by-courseId")]
+        [ProducesResponseType(typeof(IEnumerable<LessonViewModel>), StatusCodes.Status200OK)]
+        public async Task<ActionResult<IEnumerable<LessonViewModel>>> GetByCourseId([FromQuery] Guid courseId)
+        {
+            var lessons = await lessonQuery.GetByCourseId(courseId);
+            return CustomResponse(lessons);
         }
 
     }

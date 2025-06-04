@@ -1,22 +1,23 @@
 ﻿using FabianoIO.Core.DomainObjects;
+using FabianoIO.Core.Enums;
 using FabianoIO.ManagementCourses.Domain;
 
 namespace FabianoIO.ManagementStudents.Domain
 {
     public class Registration : Entity
     {
-        public Guid StudentId { get; private set; }
-        public Guid CourseId { get; private set; }
-        public DateTime RegistrationTime { get; private set; }
-        public RegistrationStatus Status { get; private set; }
-        public User Student { get; private set; }
+        public Guid StudentId { get; set; }
+        public Guid LessonId { get; set; }
+        public DateTime RegistrationTime { get; set; }
+        public EProgressLesson Status { get; set; }
+        public User Student { get; set; }
 
-        public Registration(Guid studentId, Guid courseId, DateTime registrationTime)
+        public Registration(Guid studentId, Guid lessonId, DateTime registrationTime)
         {
             StudentId = studentId;
-            CourseId = courseId;
+            LessonId = lessonId;
             RegistrationTime = registrationTime;
-            Status = RegistrationStatus.Active;
+            Status = EProgressLesson.NotStarted;
         }
     }
 }

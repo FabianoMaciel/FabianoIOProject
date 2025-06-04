@@ -11,9 +11,9 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace FabianoIO.ManagementCourses.Data.Migrations
 {
-    [DbContext(typeof(CourseContext))]
-    [Migration("20250602212606_FirstMigration")]
-    partial class FirstMigration
+    [DbContext(typeof(CoursesContext))]
+    [Migration("20250604074735_firstMigration")]
+    partial class firstMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -90,6 +90,35 @@ namespace FabianoIO.ManagementCourses.Data.Migrations
                     b.HasIndex("CourseId");
 
                     b.ToTable("Lessons", (string)null);
+                });
+
+            modelBuilder.Entity("FabianoIO.ManagementCourses.Domain.ProgressLesson", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CourseId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("Deleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("ProgressionStatus")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("StudentId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ProgressLessons", (string)null);
                 });
 
             modelBuilder.Entity("FabianoIO.ManagementCourses.Domain.Lesson", b =>

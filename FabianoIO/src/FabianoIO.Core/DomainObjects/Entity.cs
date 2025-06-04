@@ -12,7 +12,6 @@ namespace FabianoIO.Core.DomainObjects
 
         public bool Deleted { get; set; }
 
-
         private List<Event> _notifications;
 
         public IReadOnlyCollection<Event>? Notifications => _notifications?.AsReadOnly();

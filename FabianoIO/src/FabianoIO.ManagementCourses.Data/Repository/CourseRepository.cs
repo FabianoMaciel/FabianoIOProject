@@ -6,7 +6,7 @@ using System.Linq.Expressions;
 
 namespace FabianoIO.ManagementCourses.Data.Repository
 {
-    public class CourseRepository(CourseContext courseContext) : ICourseRepository
+    public class CourseRepository(CoursesContext courseContext) : ICourseRepository
     {
         private readonly DbSet<Course> _dbSet = courseContext.Set<Course>();
         public IUnitOfWork UnitOfWork => courseContext;

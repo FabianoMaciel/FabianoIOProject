@@ -21,13 +21,22 @@ namespace FabianoIO.ManagementCourses.Application.Queries
                 Id = c.Id,
                 Name = c.Name,
                 Subject = c.Subject,
-                TotalHours = c.TotalHours
-                //Aulas = c.Aulas.Select(a => new AulaViewModel
-                //{
-                //    Id = a.Id,
-                //    Nome = a.Nome,
-                //    Conteudo = a.Conteudo
-                //}).ToList()
+                TotalHours = c.TotalHours,
+                CourseId = c.CourseId
+            }).ToList();
+        }
+
+        public async Task<IEnumerable<LessonViewModel>> GetByCourseId(Guid courseId)
+        {
+            var lessons = await _lessonRepository.GetByCourseId(courseId);
+
+            return lessons.Select(c => new LessonViewModel
+            {
+                Id = c.Id,
+                Name = c.Name,
+                Subject = c.Subject,
+                TotalHours = c.TotalHours,
+                CourseId = c.CourseId
             }).ToList();
         }
     }

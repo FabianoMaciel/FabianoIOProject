@@ -1,9 +1,9 @@
 ﻿using FabianoIO.Core.Enums;
 using FabianoIO.ManagementCourses.Data;
+using FabianoIO.ManagementPayments.Data;
 using FabianoIO.ManagementStudents.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System;
 
 namespace FabianoIO.API.Configurations
 {
@@ -14,22 +14,28 @@ namespace FabianoIO.API.Configurations
             switch (databases)
             {
                 case EDatabases.SQLServer:
-                    builder.Services.AddDbContext<CourseContext>(opt =>
+                    builder.Services.AddDbContext<CoursesContext>(opt =>
                     {
                         opt.UseSqlServer(builder.Configuration.GetConnectionString("SQLServer"));
                     });
                     builder.Services.AddDbContext<StudentsContext>(options =>
                         options.UseSqlServer(builder.Configuration.GetConnectionString("SQLServer"))
                     );
+                    builder.Services.AddDbContext<PaymentsContext>(options =>
+                        options.UseSqlServer(builder.Configuration.GetConnectionString("SQLServer"))
+                    );
                     break;
 
                 case EDatabases.SQLite:
-                    builder.Services.AddDbContext<CourseContext>(opt =>
+                    builder.Services.AddDbContext<CoursesContext>(opt =>
                     {
                         opt.UseSqlServer(builder.Configuration.GetConnectionString("SQLite"));
                     });
                     builder.Services.AddDbContext<StudentsContext>(options =>
                         options.UseSqlite(builder.Configuration.GetConnectionString("SQLite"))
+                    );
+                    builder.Services.AddDbContext<PaymentsContext>(options =>
+                       options.UseSqlite(builder.Configuration.GetConnectionString("SQLite"))
                     );
                     break;
 

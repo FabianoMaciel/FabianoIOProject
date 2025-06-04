@@ -6,7 +6,7 @@ using System.Linq.Expressions;
 
 namespace FabianoIO.ManagementCourses.Data.Repository
 {
-    public class LessonRepository(CourseContext courseContext) : ILessonRepository
+    public class LessonRepository(CoursesContext courseContext) : ILessonRepository
     {
         private readonly DbSet<Lesson> _dbSet = courseContext.Set<Lesson>();
         public IUnitOfWork UnitOfWork => courseContext;
@@ -28,6 +28,11 @@ namespace FabianoIO.ManagementCourses.Data.Repository
         public async Task<IEnumerable<Lesson>> GetAll()
         {
             return await _dbSet.AsNoTracking().ToListAsync();
+        }
+
+        public async Task<IEnumerable<Lesson>> GetByCourseId(Guid courseId)
+        {
+            return await _dbSet.Where(a => a.CourseId == courseId).AsNoTracking().ToListAsync();
         }
     }
 }

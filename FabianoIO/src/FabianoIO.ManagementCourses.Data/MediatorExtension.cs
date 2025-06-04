@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using FabianoIO.Core.DomainObjects;
 
-namespace FabianoIO.ManagementStudents.Data;
+namespace FabianoIO.ManagementCourses.Data;
 
 public static class MediatorExtension
 {

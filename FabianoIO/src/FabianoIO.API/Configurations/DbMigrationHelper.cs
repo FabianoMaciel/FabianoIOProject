@@ -29,7 +29,7 @@ namespace FabianoIO.API.Configurations
             var env = scope.ServiceProvider.GetRequiredService<IWebHostEnvironment>();
 
             var studentsContext = scope.ServiceProvider.GetRequiredService<StudentsContext>();
-            var courseContext = scope.ServiceProvider.GetRequiredService<CourseContext>();
+            var courseContext = scope.ServiceProvider.GetRequiredService<CoursesContext>();
 
             if (env.IsDevelopment())
             {
@@ -39,7 +39,7 @@ namespace FabianoIO.API.Configurations
             }
         }
 
-        private static async Task EnsureSeedData(StudentsContext studentsContext, CourseContext courseContext)
+        private static async Task EnsureSeedData(StudentsContext studentsContext, CoursesContext courseContext)
         {
             await SeedUsers(studentsContext);
             await SeedCourses(courseContext);
@@ -155,7 +155,7 @@ namespace FabianoIO.API.Configurations
             #endregion
         }
 
-        public static async Task SeedRegistrations(StudentsContext studentContext, CourseContext courseContext)
+        public static async Task SeedRegistrations(StudentsContext studentContext, CoursesContext courseContext)
         {
             if (!studentContext.Registrations.Any())
             {
@@ -197,7 +197,7 @@ namespace FabianoIO.API.Configurations
             }
         }
 
-        public static async Task SeedCertifications(StudentsContext studentContext, CourseContext courseContext)
+        public static async Task SeedCertifications(StudentsContext studentContext, CoursesContext courseContext)
         {
             if (!studentContext.Certifications.Any())
             {
@@ -231,7 +231,7 @@ namespace FabianoIO.API.Configurations
             }
         }
 
-        public static async Task SeedCourses(CourseContext context)
+        public static async Task SeedCourses(CoursesContext context)
         {
             if (!context.Courses.Any())
             {
@@ -260,7 +260,7 @@ namespace FabianoIO.API.Configurations
             }
         }
 
-        public static async Task SeedLessons(CourseContext context)
+        public static async Task SeedLessons(CoursesContext context)
         {
             if (!context.Lessons.Any())
             {
