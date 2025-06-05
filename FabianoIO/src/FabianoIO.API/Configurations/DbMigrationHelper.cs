@@ -243,7 +243,8 @@ namespace FabianoIO.API.Configurations
                         CreatedDate = DateTime.Now,
                         Deleted = false,
                         UpdatedDate = DateTime.Now,
-                        Description = "Este e um curso sobre modelagem de dominios ricos"
+                        Description = "Este e um curso sobre modelagem de dominios ricos",
+                        Price = 500
                     },
                    new()
                     {
@@ -251,7 +252,8 @@ namespace FabianoIO.API.Configurations
                         CreatedDate = DateTime.Now,
                         Deleted = false,
                         UpdatedDate = DateTime.Now,
-                        Description = "Este e um curso sobre testes de software"
+                        Description = "Este e um curso sobre testes de software",
+                        Price = 350
                     },
                 };
 

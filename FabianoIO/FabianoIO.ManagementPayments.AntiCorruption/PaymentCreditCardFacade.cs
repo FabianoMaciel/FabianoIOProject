@@ -7,7 +7,7 @@ public class PaymentCreditCardFacade(IPayPalGateway payPalGateway,
     IOptions<PaymentSettings> options) : IPaymentCreditCardFacade
 {
     private readonly PaymentSettings _settings = options.Value;
-    public BusinessTransaction MakePayment(Order order, Payment payment)
+    public BusinessTransaction MakePayment(Payment payment)
     {
         var apiKey = _settings.ApiKey;
         var encriptionKey = _settings.EncriptionKey;
@@ -15,7 +15,7 @@ public class PaymentCreditCardFacade(IPayPalGateway payPalGateway,
         var serviceKey = payPalGateway.GetPayPalServiceKey(apiKey, encriptionKey);
         var cardHashKey = payPalGateway.GetCardHashKey(serviceKey, payment.CardNumber);
 
-        var transaction = payPalGateway.CommitTransaction(cardHashKey, order.CourseId.ToString(), payment.Value);
+        var transaction = payPalGateway.CommitTransaction(cardHashKey, payment.CourseId.ToString(), payment.Value);
 
         transaction.PaymentId = payment.Id;
 

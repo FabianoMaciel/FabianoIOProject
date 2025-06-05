@@ -30,5 +30,18 @@ namespace FabianoIO.ManagementCourses.Application.Queries
                 //}).ToList()
             }).ToList();
         }
+
+        public async Task<CourseViewModel> GetById(Guid courseId)
+        {
+            var course = await _courseRepository.GetById(courseId);
+
+            return new CourseViewModel
+            {
+                Id = course.Id,
+                Name = course.Name,
+                Description = course.Description,
+                Price = course.Price,
+            };
+        }
     }
 }

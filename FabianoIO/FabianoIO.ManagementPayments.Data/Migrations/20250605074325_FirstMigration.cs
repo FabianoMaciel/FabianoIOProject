@@ -1,12 +1,11 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace FabianoIO.ManagementPayments.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class firstMigration : Migration
+    public partial class FirstMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -20,7 +19,7 @@ namespace FabianoIO.ManagementPayments.Data.Migrations
                     StudentId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Value = table.Column<double>(type: "float", nullable: false),
                     CardName = table.Column<string>(type: "varchar(250)", nullable: false),
-                    CardNumber = table.Column<string>(type: "varchar(16)", nullable: false),
+                    CardNumber = table.Column<string>(type: "varchar(50)", nullable: false),
                     CardExpirationDate = table.Column<string>(type: "varchar(10)", nullable: false),
                     CardCVV = table.Column<string>(type: "varchar(4)", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),

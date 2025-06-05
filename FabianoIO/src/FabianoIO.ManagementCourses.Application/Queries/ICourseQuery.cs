@@ -5,5 +5,7 @@ namespace FabianoIO.ManagementCourses.Application.Queries
     public interface ICourseQuery
     {
         Task<IEnumerable<CourseViewModel>> GetAll();
+
+        Task<CourseViewModel> GetById(Guid courseId);
     }
 }

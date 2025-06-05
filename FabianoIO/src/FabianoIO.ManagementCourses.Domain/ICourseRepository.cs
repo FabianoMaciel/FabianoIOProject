@@ -7,6 +7,8 @@ namespace FabianoIO.Core.Interfaces.Repositories
     {
         Task<IEnumerable<Course>> GetAll();
 
+        Task<Course> GetById(Guid courseId);
+
         void Add(Course course);
     }
 }

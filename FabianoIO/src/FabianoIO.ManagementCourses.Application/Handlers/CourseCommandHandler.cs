@@ -1,6 +1,9 @@
-﻿using FabianoIO.Core.Interfaces.Repositories;
+﻿using FabianoIO.Core.DomainObjects.DTOs;
+using FabianoIO.Core.Interfaces.Repositories;
 using FabianoIO.Core.Messages;
+using FabianoIO.Core.Messages.IntegrationCommands;
 using FabianoIO.Core.Messages.Notifications;
+using FabianoIO.ManagementCourses.Aplication.Commands;
 using FabianoIO.ManagementCourses.Application.Commands;
 using FabianoIO.ManagementCourses.Domain;
 using MediatR;
@@ -8,7 +11,8 @@ using MediatR;
 namespace FabianoIO.ManagementCourses.Application.Handlers
 {
     public class CourseCommandHandler(ICourseRepository courseRepository,
-                                IMediator mediator) : IRequestHandler<AddCourseCommand, bool>
+                                IMediator mediator) : IRequestHandler<AddCourseCommand, bool>,
+                                                      IRequestHandler<ValidatePaymentCourseCommand, bool>
     {
         public async Task<bool> Handle(AddCourseCommand request, CancellationToken cancellationToken)
         {
@@ -24,6 +28,32 @@ namespace FabianoIO.ManagementCourses.Application.Handlers
             courseRepository.Add(course);
 
             return await courseRepository.UnitOfWork.Commit();
+        }
+
+        public async Task<bool> Handle(ValidatePaymentCourseCommand command, CancellationToken cancellationToken)
+        {
+            if (!ValidatComand(command))
+                return false;
+
+            var course = await courseRepository.GetById(command.CourseId);
+            if (course == null)
+            {
+                await mediator.Publish(new DomainNotification(command.MessageType, "Curso não encontrado."), cancellationToken);
+                return false;
+            }
+
+            var paymentCourse = new PaymentCourse
+            {
+                StudentId = command.StudentId,
+                CourseId = course.Id,
+                CardCVV = command.CardCVV,
+                CardExpirationDate = command.CardExpirationDate,
+                CardName = command.CardName,
+                CardNumber = command.CardNumber,
+                Total = course.Price
+            };
+
+            return await mediator.Send(new MakePaymentCourseCommand(paymentCourse), cancellationToken);
         }
 
         private bool ValidatComand(Command command)

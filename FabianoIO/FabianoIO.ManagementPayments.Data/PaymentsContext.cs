@@ -4,7 +4,6 @@ using FabianoIO.ManagementPayments.Business;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using PlataformaEducacao.Pagamentos.Data;
 
 namespace FabianoIO.ManagementPayments.Data;
 
@@ -67,7 +66,7 @@ public class PaymentsContext(DbContextOptions<PaymentsContext> options, IMediato
 
             builder.Property(c => c.CardNumber)
                 .IsRequired()
-                .HasColumnType("varchar(16)");
+                .HasColumnType("varchar(50)");
 
             builder.Property(c => c.CardExpirationDate)
                 .IsRequired()

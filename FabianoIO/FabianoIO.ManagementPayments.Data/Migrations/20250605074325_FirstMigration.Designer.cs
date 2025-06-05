@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FabianoIO.ManagementPayments.Data.Migrations
 {
     [DbContext(typeof(PaymentsContext))]
-    [Migration("20250604075716_firstMigration")]
-    partial class firstMigration
+    [Migration("20250605074325_FirstMigration")]
+    partial class FirstMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -80,7 +80,7 @@ namespace FabianoIO.ManagementPayments.Data.Migrations
 
                     b.Property<string>("CardNumber")
                         .IsRequired()
-                        .HasColumnType("varchar(16)");
+                        .HasColumnType("varchar(50)");
 
                     b.Property<Guid>("CourseId")
                         .HasColumnType("uniqueidentifier");
@@ -117,8 +117,7 @@ namespace FabianoIO.ManagementPayments.Data.Migrations
 
             modelBuilder.Entity("FabianoIO.ManagementPayments.Business.Payment", b =>
                 {
-                    b.Navigation("Transaction")
-                        .IsRequired();
+                    b.Navigation("Transaction");
                 });
 #pragma warning restore 612, 618
         }

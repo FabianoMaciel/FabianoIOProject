@@ -24,5 +24,10 @@ namespace FabianoIO.ManagementCourses.Data.Repository
         {
             return await _dbSet.AsNoTracking().ToListAsync();
         }
+
+        public async Task<Course> GetById(Guid courseId)
+        {
+            return await _dbSet.FirstOrDefaultAsync(a => a.Id == courseId);
+        }
     }
 }

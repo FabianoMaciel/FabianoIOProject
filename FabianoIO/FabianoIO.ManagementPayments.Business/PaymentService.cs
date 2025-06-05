@@ -1,7 +1,6 @@
-﻿using MediatR;
-using FabianoIO.Core.Messages.IntegrationEvents;
+﻿using FabianoIO.Core.DomainObjects.DTOs;
 using FabianoIO.Core.Messages.Notifications;
-using FabianoIO.Core.DomainObjects.DTOs;
+using MediatR;
 
 namespace FabianoIO.ManagementPayments.Business;
 
@@ -11,13 +10,6 @@ public class PaymentService(IPaymentCreditCardFacade paymentCreditCardFacade,
 {
     public async Task<bool> MakePaymentCourse(PaymentCourse paymentCourse)
     {
-        var order = new Order
-        {
-            CourseId = paymentCourse.CourseId,
-            StudentId = paymentCourse.StudentId,
-            Total = paymentCourse.Total,
-        };
-
         var payment = new Payment
         {
             Value = paymentCourse.Total,
@@ -29,11 +21,12 @@ public class PaymentService(IPaymentCreditCardFacade paymentCreditCardFacade,
             CourseId = paymentCourse.CourseId
         };
 
-        var transaction = paymentCreditCardFacade.MakePayment(order, payment);
+        var transaction = paymentCreditCardFacade.MakePayment(payment);
 
         if (transaction.StatusTransaction == StatusTransaction.Accept)
         {
-            payment.AddEvent(new PaymentCourseMadeEvent(payment.CourseId, payment.StudentId));
+            //TO Fabiano eu preciso gerar esse evento?
+            // payment.AddEvent(new PaymentCourseMadeEvent(payment.CourseId, payment.StudentId));
 
             paymentRepository.Add(payment);
             paymentRepository.AddTransaction(transaction);

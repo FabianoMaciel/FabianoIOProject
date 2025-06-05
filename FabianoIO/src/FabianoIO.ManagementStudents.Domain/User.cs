@@ -27,8 +27,5 @@ namespace FabianoIO.ManagementStudents.Domain
 
         private readonly List<Registration> registrations = [];
         public IReadOnlyCollection<Registration> Registrations => registrations;
-         
-        //TO DO Manipulação: Entidade Aluno gerencia diretamente suas Matrículas e 
-        //Certificados.
     }
 }

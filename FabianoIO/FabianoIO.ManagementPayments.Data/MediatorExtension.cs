@@ -1,8 +1,7 @@
 ﻿using FabianoIO.Core.DomainObjects;
-using FabianoIO.ManagementPayments.Data;
 using MediatR;
 
-namespace PlataformaEducacao.Pagamentos.Data;
+namespace FabianoIO.ManagementPayments.Data;
 
 //TO DO ver se eu nao consigo criar so um publishDomainEvents pra reutilizar ja que todos usam a mesma logica
 public static class MediatorExtension
