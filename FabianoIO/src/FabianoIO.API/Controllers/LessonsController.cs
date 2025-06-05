@@ -2,11 +2,18 @@
 using FabianoIO.ManagementCourses.Application.Commands;
 using FabianoIO.ManagementCourses.Application.Queries;
 using FabianoIO.ManagementCourses.Application.Queries.ViewModels;
-using FabianoIO.ManagementCourses.Domain;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
+
+//TO DO
+//Fazer aula deve checar se a aula esta dentro de um curso ja pago pelo student
+//se nao foi pago ainda retornar a exception com a mensagem
+//ai o aluno pode fazer a aula caso ja tenha o pagamento para um curso que tem a aula dentro dela
+//Concluir aula, novamente fazer o check, e ver se o aluno estava ja fazendo essa aula, se ja estava
+//entao concluir aula vai ser valido
+
 
 namespace FabianoIO.API.Controllers
 {
@@ -17,7 +24,7 @@ namespace FabianoIO.API.Controllers
                                 INotifier notifier) : MainController(notifier)
     {
         [AllowAnonymous]
-        [HttpGet("get-all")]
+        [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<LessonViewModel>), StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<LessonViewModel>>> GetAll()
         {

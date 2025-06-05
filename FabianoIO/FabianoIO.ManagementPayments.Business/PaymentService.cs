@@ -25,7 +25,7 @@ public class PaymentService(IPaymentCreditCardFacade paymentCreditCardFacade,
 
         if (transaction.StatusTransaction == StatusTransaction.Accept)
         {
-            //TO Fabiano eu preciso gerar esse evento?
+            //TO DO Fabiano eu preciso gerar esse evento?
             // payment.AddEvent(new PaymentCourseMadeEvent(payment.CourseId, payment.StudentId));
 
             paymentRepository.Add(payment);
