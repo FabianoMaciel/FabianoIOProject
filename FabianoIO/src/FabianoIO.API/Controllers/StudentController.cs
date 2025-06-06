@@ -18,7 +18,7 @@ namespace FabianoIO.API.Controllers
     {
         [Authorize(Roles = "STUDENT")]
         [HttpPost("register-to-course/{courseId:guid}")]
-        public async Task<IActionResult> RegisterToLesson(Guid courseId)
+        public async Task<IActionResult> RegisterToCourse(Guid courseId)
         {
             var course = await courseQuery.GetById(courseId);
             if (course == null)
@@ -26,7 +26,7 @@ namespace FabianoIO.API.Controllers
 
             var paymentExists = await paymentQuery.PaymentExists(UserId, courseId);
             if (!paymentExists)
-                return UnprocessableEntity("Você não possui acesso a esse curso");
+                return UnprocessableEntity("Você não possui acesso a esse curso.");
 
             var command = new AddRegistrationCommand(UserId, courseId);
             await _mediator.Send(command);
