@@ -18,6 +18,11 @@ public class PaymentRepository(PaymentsContext context) : IPaymentRepository
         context.Set<BusinessTransaction>().Add(transaction);
     }
 
+    public async Task<bool> PaymentExists(Guid studentId, Guid courseId)
+    {
+       return await _dbSet.AnyAsync(x => x.CourseId == courseId && x.StudentId == studentId);
+    }
+
     public void Dispose()
     {
        context.Dispose();

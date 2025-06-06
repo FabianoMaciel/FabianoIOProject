@@ -10,5 +10,7 @@ namespace FabianoIO.Core.Interfaces.Repositories
         Task<Course> GetById(Guid courseId);
 
         void Add(Course course);
+
+        bool CourseExists(Guid courseI);
     }
 }

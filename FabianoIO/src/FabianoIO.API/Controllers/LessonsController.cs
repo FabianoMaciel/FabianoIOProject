@@ -33,7 +33,7 @@ namespace FabianoIO.API.Controllers
         }
 
         [Authorize(Roles = "ADMIN")]
-        [HttpPost("add-lesson")]
+        [HttpPost]
         [ProducesResponseType(typeof(CourseViewModel), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]

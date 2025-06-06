@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FabianoIO.ManagementCourses.Data.Migrations
 {
     [DbContext(typeof(CoursesContext))]
-    [Migration("20250604074735_firstMigration")]
-    partial class firstMigration
+    [Migration("20250606082306_FirstMigration")]
+    partial class FirstMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

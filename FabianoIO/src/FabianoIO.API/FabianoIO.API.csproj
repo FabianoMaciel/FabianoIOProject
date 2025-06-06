@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\FabianoIO.ManagementPayments.AntiCorruption\FabianoIO.ManagementPayments.AntiCorruption.csproj" />
+    <ProjectReference Include="..\..\FabianoIO.ManagementPayments.Application\FabianoIO.ManagementPayments.Application.csproj" />
     <ProjectReference Include="..\..\FabianoIO.ManagementPayments.Business\FabianoIO.ManagementPayments.Business.csproj" />
     <ProjectReference Include="..\..\FabianoIO.ManagementPayments.Data\FabianoIO.ManagementPayments.Data.csproj" />
     <ProjectReference Include="..\FabianoIO.Core\FabianoIO.Core.csproj" />

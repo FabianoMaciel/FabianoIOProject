@@ -7,15 +7,15 @@ namespace FabianoIO.ManagementStudents.Domain
     public class Registration : Entity
     {
         public Guid StudentId { get; set; }
-        public Guid LessonId { get; set; }
+        public Guid CourseId { get; set; }
         public DateTime RegistrationTime { get; set; }
         public EProgressLesson Status { get; set; }
         public User Student { get; set; }
 
-        public Registration(Guid studentId, Guid lessonId, DateTime registrationTime)
+        public Registration(Guid studentId, Guid courseId, DateTime registrationTime)
         {
             StudentId = studentId;
-            LessonId = lessonId;
+            CourseId = courseId;
             RegistrationTime = registrationTime;
             Status = EProgressLesson.NotStarted;
         }

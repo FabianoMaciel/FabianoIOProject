@@ -44,7 +44,6 @@ namespace FabianoIO.API.Configurations
             await SeedUsers(studentsContext);
             await SeedCourses(courseContext);
             await SeedLessons(courseContext);
-            await SeedRegistrations(studentsContext, courseContext);
             await SeedCertifications(studentsContext, courseContext);
         }
 
@@ -153,48 +152,6 @@ namespace FabianoIO.API.Configurations
 
             context.SaveChanges();
             #endregion
-        }
-
-        public static async Task SeedRegistrations(StudentsContext studentContext, CoursesContext courseContext)
-        {
-            if (!studentContext.Registrations.Any())
-            {
-                var user1 = studentContext.SystemUsers.FirstOrDefault(u => u.UserName.Equals("user1@fabianoio.com"));
-                var user2 = studentContext.SystemUsers.FirstOrDefault(u => u.UserName.Equals("user2@fabianoio.com"));
-                var courseDominios = courseContext.Courses.FirstOrDefault(u => u.Name.Equals("Modelagem de Dominios Ricos"));
-                var courseTests = courseContext.Courses.FirstOrDefault(u => u.Name.Equals("Dominando Testes de Software"));
-
-                var registrations = new List<Registration>
-                {
-                    new(user1.Id, courseDominios.Id, DateTime.Now)
-                    {
-                        CreatedDate = DateTime.Now,
-                        Deleted = false,
-                        UpdatedDate = DateTime.Now
-                    },
-                    new(user1.Id, courseTests.Id, DateTime.Now)
-                    {
-                        CreatedDate = DateTime.Now,
-                        Deleted = false,
-                        UpdatedDate = DateTime.Now
-                    },
-                    new(user2.Id, courseDominios.Id, DateTime.Now)
-                    {
-                        CreatedDate = DateTime.Now,
-                        Deleted = false,
-                        UpdatedDate = DateTime.Now
-                    },
-                    new(user2.Id, courseTests.Id, DateTime.Now)
-                    {
-                        CreatedDate = DateTime.Now,
-                        Deleted = false,
-                        UpdatedDate = DateTime.Now
-                    },
-                };
-
-                await studentContext.Registrations.AddRangeAsync(registrations);
-                studentContext.SaveChanges();
-            }
         }
 
         public static async Task SeedCertifications(StudentsContext studentContext, CoursesContext courseContext)

@@ -29,5 +29,10 @@ namespace FabianoIO.ManagementCourses.Data.Repository
         {
             return await _dbSet.FirstOrDefaultAsync(a => a.Id == courseId);
         }
+
+        public bool CourseExists(Guid courseId)
+        {
+            return _dbSet.Any(a => a.Id == courseId);
+        }
     }
 }

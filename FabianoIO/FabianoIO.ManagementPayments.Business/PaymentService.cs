@@ -25,9 +25,6 @@ public class PaymentService(IPaymentCreditCardFacade paymentCreditCardFacade,
 
         if (transaction.StatusTransaction == StatusTransaction.Accept)
         {
-            //TO DO Fabiano eu preciso gerar esse evento?
-            // payment.AddEvent(new PaymentCourseMadeEvent(payment.CourseId, payment.StudentId));
-
             paymentRepository.Add(payment);
             paymentRepository.AddTransaction(transaction);
 
@@ -38,4 +35,5 @@ public class PaymentService(IPaymentCreditCardFacade paymentCreditCardFacade,
         await mediator.Publish(new DomainNotification("Payment", "The transaction was declined"));
         return false;
     }
+
 }

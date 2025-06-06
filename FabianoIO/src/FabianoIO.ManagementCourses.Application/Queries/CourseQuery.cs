@@ -21,18 +21,15 @@ namespace FabianoIO.ManagementCourses.Application.Queries
                 Id = c.Id,
                 Name = c.Name,
                 Description = c.Description,
-                Price = c.Price,
-                //Aulas = c.Aulas.Select(a => new AulaViewModel
-                //{
-                //    Id = a.Id,
-                //    Nome = a.Nome,
-                //    Conteudo = a.Conteudo
-                //}).ToList()
+                Price = c.Price
             }).ToList();
         }
 
         public async Task<CourseViewModel> GetById(Guid courseId)
         {
+            if(!_courseRepository.CourseExists(courseId))
+                return null;
+
             var course = await _courseRepository.GetById(courseId);
 
             return new CourseViewModel

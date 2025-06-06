@@ -24,9 +24,9 @@ namespace FabianoIO.ManagementStudents.Data.Repository
             throw new NotImplementedException();
         }
 
-        public Task<User> GetById(Guid id)
+        public async Task<User> GetById(Guid id)
         {
-            throw new NotImplementedException();
+            return await db.SystemUsers.FirstOrDefaultAsync(u => u.Id == id);
         }
 
         public void Add(User user)

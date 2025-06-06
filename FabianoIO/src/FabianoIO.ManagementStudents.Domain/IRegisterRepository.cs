@@ -2,9 +2,9 @@
 
 namespace FabianoIO.ManagementStudents.Domain
 {
-    public interface IRegisterRepository : IRepository<User>
+    public interface IRegistrationRepository : IRepository<User>
     {
-        Task<Registration> StartLesson(Guid studentId, Guid lessonId);
-        Task<Registration> FinishLesson(Guid studentId, Guid lessonId);
+        Task<Registration> FinishCourse(Guid studentId, Guid courseId);
+        Registration AddRegistration(Guid studentId, Guid courseId);
     }
 }
