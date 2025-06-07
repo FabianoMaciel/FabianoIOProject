@@ -47,7 +47,10 @@ namespace FabianoIO.API.Configurations
             builder.Services.AddScoped<IPaymentQuery, PaymentQuery>();
             builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<AddUserCommand>());
             builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<AddLessonCommand>());
+            builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<StartLessonCommand>());
+            builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<FinishLessonCommand>());
             builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<AddCourseCommand>());
+            builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<CreateProgressByCourseCommand>());
             builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<PaymentCommandHandler>());
             builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<RegistrationCommandHandler>());
 

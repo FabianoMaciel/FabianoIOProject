@@ -33,6 +33,8 @@ namespace FabianoIO.ManagementStudents.Data.Repository
                 throw new Exception("Matrícula já existente.");
 
             var registration = new Registration(studentId, courseId, DateTime.Now);
+
+
             _dbSet.Add(registration);
 
             return registration;

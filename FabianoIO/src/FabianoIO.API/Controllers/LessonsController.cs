@@ -32,6 +32,15 @@ namespace FabianoIO.API.Controllers
             return CustomResponse(lessons);
         }
 
+        [AllowAnonymous]
+        [HttpGet("get-by-courseId")]
+        [ProducesResponseType(typeof(IEnumerable<LessonViewModel>), StatusCodes.Status200OK)]
+        public async Task<ActionResult<IEnumerable<LessonViewModel>>> GetByCourseId([FromQuery] Guid courseId)
+        {
+            var lessons = await lessonQuery.GetByCourseId(courseId);
+            return CustomResponse(lessons);
+        }
+
         [Authorize(Roles = "ADMIN")]
         [HttpPost]
         [ProducesResponseType(typeof(CourseViewModel), StatusCodes.Status201Created)]
@@ -46,14 +55,32 @@ namespace FabianoIO.API.Controllers
             return CustomResponse(HttpStatusCode.Created); ;
         }
 
-        [AllowAnonymous]
-        [HttpGet("get-by-courseId")]
-        [ProducesResponseType(typeof(IEnumerable<LessonViewModel>), StatusCodes.Status200OK)]
-        public async Task<ActionResult<IEnumerable<LessonViewModel>>> GetByCourseId([FromQuery] Guid courseId)
+        [Authorize(Roles = "STUDENT")]
+        [HttpPost("{lessonId:guid}/start-class")]
+        [ProducesResponseType(typeof(CourseViewModel), StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        public async Task<IActionResult> StartClass(Guid lessonId)
         {
-            var lessons = await lessonQuery.GetByCourseId(courseId);
-            return CustomResponse(lessons);
+            var command = new StartLessonCommand(lessonId, UserId);
+            await _mediator.Send(command);
+
+            return CustomResponse(HttpStatusCode.Created); ;
         }
 
+        [Authorize(Roles = "STUDENT")]
+        [HttpPost("{lessonId:guid}/finish-class")]
+        [ProducesResponseType(typeof(CourseViewModel), StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        public async Task<IActionResult> FinishClass(Guid lessonId)
+        {
+            var command = new FinishLessonCommand(lessonId, UserId);
+            await _mediator.Send(command);
+
+            return CustomResponse(HttpStatusCode.Created); ;
+        }
     }
 }

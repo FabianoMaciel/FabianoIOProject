@@ -11,8 +11,10 @@ using MediatR;
 namespace FabianoIO.ManagementCourses.Application.Handlers
 {
     public class CourseCommandHandler(ICourseRepository courseRepository,
+                                ILessonRepository lessonRepository,
                                 IMediator mediator) : IRequestHandler<AddCourseCommand, bool>,
-                                                      IRequestHandler<ValidatePaymentCourseCommand, bool>
+                                                      IRequestHandler<ValidatePaymentCourseCommand, bool>,
+                                                      IRequestHandler<CreateProgressByCourseCommand, bool>
     {
         public async Task<bool> Handle(AddCourseCommand request, CancellationToken cancellationToken)
         {
@@ -54,6 +56,15 @@ namespace FabianoIO.ManagementCourses.Application.Handlers
             };
 
             return await mediator.Send(new MakePaymentCourseCommand(paymentCourse), cancellationToken);
+        }
+
+        public async Task<bool> Handle(CreateProgressByCourseCommand request, CancellationToken cancellationToken)
+        {
+            if (!ValidatComand(request)) return false;
+
+            await lessonRepository.CreateProgressLessonByCourse(request.CourseId, request.StudentId);
+
+            return await courseRepository.UnitOfWork.Commit();
         }
 
         private bool ValidatComand(Command command)

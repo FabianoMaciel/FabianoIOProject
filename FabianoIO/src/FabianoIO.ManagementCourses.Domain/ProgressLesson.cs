@@ -3,10 +3,19 @@ using FabianoIO.Core.Enums;
 
 namespace FabianoIO.ManagementCourses.Domain
 {
-    public class ProgressLesson(Guid studentId, Guid courseId) : Entity, IAggregateRoot
+    public class ProgressLesson : Entity, IAggregateRoot
     {
-        public Guid StudentId { get; set; } = studentId;
-        public Guid CourseId { get; set; } = courseId;
-        public EProgressLesson ProgressionStatus { get; private set; }
+        public ProgressLesson(Guid lessonId, Guid studentId, EProgressLesson progressLesson)
+        {
+            this.LessonId = lessonId;
+            this.StudentId = studentId;
+            this.ProgressionStatus = progressLesson;
+        }
+
+        public ProgressLesson() { }
+
+        public Guid StudentId { get; set; }
+        public Guid LessonId { get; set; }
+        public EProgressLesson ProgressionStatus { get; set; }
     }
 }

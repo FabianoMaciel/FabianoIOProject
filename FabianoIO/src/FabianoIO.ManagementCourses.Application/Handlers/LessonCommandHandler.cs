@@ -8,7 +8,9 @@ using MediatR;
 namespace FabianoIO.ManagementCourses.Application.Handlers
 {
     public class LessonCommandHandler(ILessonRepository lessonRepository,
-                                IMediator mediator) : IRequestHandler<AddLessonCommand, bool>
+                                IMediator mediator) : IRequestHandler<AddLessonCommand, bool>,
+                                                    IRequestHandler<StartLessonCommand, bool>,
+                                                    IRequestHandler<FinishLessonCommand, bool>
     {
         public async Task<bool> Handle(AddLessonCommand request, CancellationToken cancellationToken)
         {
@@ -17,6 +19,24 @@ namespace FabianoIO.ManagementCourses.Application.Handlers
             var lesson = new Lesson(request.Name, request.Subject, request.TotalHours, request.CourseId);
 
             lessonRepository.Add(lesson);
+
+            return await lessonRepository.UnitOfWork.Commit();
+        }
+
+        public async Task<bool> Handle(StartLessonCommand request, CancellationToken cancellationToken)
+        {
+            if (!ValidateComand(request)) return false;
+
+            await lessonRepository.StartLesson(request.LessonId, request.StudentId);
+
+            return await lessonRepository.UnitOfWork.Commit();
+        }
+
+        public async Task<bool> Handle(FinishLessonCommand request, CancellationToken cancellationToken)
+        {
+            if (!ValidateComand(request)) return false;
+
+            await lessonRepository.FinishLesson(request.LessonId, request.StudentId);
 
             return await lessonRepository.UnitOfWork.Commit();
         }

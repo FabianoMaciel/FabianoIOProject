@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FabianoIO.ManagementCourses.Data.Migrations
 {
     [DbContext(typeof(CoursesContext))]
-    [Migration("20250606082306_FirstMigration")]
+    [Migration("20250607105645_FirstMigration")]
     partial class FirstMigration
     {
         /// <inheritdoc />
@@ -98,14 +98,14 @@ namespace FabianoIO.ManagementCourses.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("CourseId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("Deleted")
                         .HasColumnType("bit");
+
+                    b.Property<Guid>("LessonId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("ProgressionStatus")
                         .HasColumnType("int");

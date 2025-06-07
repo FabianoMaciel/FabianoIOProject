@@ -1,4 +1,5 @@
 ﻿using FabianoIO.Core.Interfaces.Services;
+using FabianoIO.ManagementCourses.Application.Commands;
 using FabianoIO.ManagementCourses.Application.Queries;
 using FabianoIO.ManagementPayments.Application.Query;
 using FabianoIO.ManagementStudents.Aplication.Commands;
@@ -28,8 +29,11 @@ namespace FabianoIO.API.Controllers
             if (!paymentExists)
                 return UnprocessableEntity("Você não possui acesso a esse curso.");
 
-            var command = new AddRegistrationCommand(UserId, courseId);
-            await _mediator.Send(command);
+            var commandRegistration = new AddRegistrationCommand(UserId, courseId);
+            await _mediator.Send(commandRegistration);
+
+            var commandCreationProgress = new CreateProgressByCourseCommand(courseId, UserId);
+            await _mediator.Send(commandCreationProgress);
 
             return CustomResponse(HttpStatusCode.Created);
         }

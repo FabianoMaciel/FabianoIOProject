@@ -28,7 +28,7 @@ namespace FabianoIO.ManagementCourses.Application.Commands
     public class AddLessonCommandValidation : AbstractValidator<AddLessonCommand>
     {
         public static string NameError => "O nome da aula não pode ser vazio.";
-        public static string SubjectError => "A áread do conhecimento não pode ser vazia.";
+        public static string SubjectError => "A área do conhecimento não pode ser vazia.";
         public static string UserCreationError => "O ID do usuário de criação não pode ser vazio.";
         public static string PriceErro => "O preço do curso deve ser maior que zero.";
 
