@@ -3,8 +3,6 @@ using FabianoIO.Core.Enums;
 using FabianoIO.Core.Interfaces.Repositories;
 using FabianoIO.ManagementCourses.Domain;
 using Microsoft.EntityFrameworkCore;
-using System.Linq.Expressions;
-using System.Reflection.Metadata.Ecma335;
 
 namespace FabianoIO.ManagementCourses.Data.Repository
 {
@@ -74,10 +72,13 @@ namespace FabianoIO.ManagementCourses.Data.Repository
 
             return true;
         }
-
-        private bool ExistProgress(Guid lessonId, Guid studentId)
+        public bool ExistProgress(Guid lessonId, Guid studentId)
         {
             return _courseContext.ProgressLessons.AsNoTracking().Any(a => a.LessonId == lessonId && a.StudentId == studentId);
+        }
+        public EProgressLesson GetProgressStatusLesson(Guid lessonId, Guid studentId)
+        {
+            return _courseContext.ProgressLessons.FirstOrDefault(a => a.LessonId == lessonId && a.StudentId == studentId).ProgressionStatus;
         }
     }
 }

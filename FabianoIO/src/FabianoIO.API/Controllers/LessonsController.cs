@@ -1,4 +1,5 @@
-﻿using FabianoIO.Core.Interfaces.Services;
+﻿using FabianoIO.Core.Enums;
+using FabianoIO.Core.Interfaces.Services;
 using FabianoIO.ManagementCourses.Application.Commands;
 using FabianoIO.ManagementCourses.Application.Queries;
 using FabianoIO.ManagementCourses.Application.Queries.ViewModels;
@@ -6,14 +7,6 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
-
-//TO DO
-//Fazer aula deve checar se a aula esta dentro de um curso ja pago pelo student
-//se nao foi pago ainda retornar a exception com a mensagem
-//ai o aluno pode fazer a aula caso ja tenha o pagamento para um curso que tem a aula dentro dela
-//Concluir aula, novamente fazer o check, e ver se o aluno estava ja fazendo essa aula, se ja estava
-//entao concluir aula vai ser valido
-
 
 namespace FabianoIO.API.Controllers
 {
@@ -61,12 +54,21 @@ namespace FabianoIO.API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> StartClass(Guid lessonId)
         {
+            if (!lessonQuery.ExistsProgress(lessonId, UserId))
+                return NotFound("Você ainda não está matriculado a essa aula.");
+
+            var status = lessonQuery.GetProgressStatusLesson(lessonId, UserId);
+
+            if (status == EProgressLesson.Completed)
+                return NotFound("Você já concluiu essa aula.");
+
             var command = new StartLessonCommand(lessonId, UserId);
             await _mediator.Send(command);
 
-            return CustomResponse(HttpStatusCode.Created); ;
+            return CustomResponse(HttpStatusCode.NoContent); ;
         }
 
         [Authorize(Roles = "STUDENT")]
@@ -75,12 +77,21 @@ namespace FabianoIO.API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> FinishClass(Guid lessonId)
         {
+            if (!lessonQuery.ExistsProgress(lessonId, UserId))
+                return NotFound("Você ainda não está matriculado a essa aula.");
+
+            var status = lessonQuery.GetProgressStatusLesson(lessonId, UserId);
+
+            if (status == EProgressLesson.NotStarted)
+                return NotFound("Você ainda não teve progresso nesta aula.");
+
             var command = new FinishLessonCommand(lessonId, UserId);
             await _mediator.Send(command);
 
-            return CustomResponse(HttpStatusCode.Created); ;
+            return CustomResponse(HttpStatusCode.NoContent); ;
         }
     }
 }

@@ -1,12 +1,10 @@
-﻿using FabianoIO.API.ViewModel;
-using FabianoIO.Core.Interfaces.Services;
+﻿using FabianoIO.Core.Interfaces.Services;
 using FabianoIO.ManagementCourses.Aplication.Commands;
 using FabianoIO.ManagementCourses.Application.Commands;
 using FabianoIO.ManagementCourses.Application.Queries;
 using FabianoIO.ManagementCourses.Application.Queries.ViewModels;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Mvc;
 using PlataformaEducacao.Api.DTOs;
 using System.Net;
@@ -53,7 +51,7 @@ namespace FabianoIO.API.Controllers
 
         [Authorize(Roles = "STUDENT")]
         [HttpPost("{courseId:guid}/make-payment")]
-        public async Task<IActionResult> MakePayment(Guid courseId, [FromBody]PaymentViewModel paymentViewModel)
+        public async Task<IActionResult> MakePayment(Guid courseId, [FromBody] PaymentViewModel paymentViewModel)
         {
             var command = new ValidatePaymentCourseCommand(courseId, UserId, paymentViewModel.CardName,
                                                         paymentViewModel.CardNumber, paymentViewModel.CardExpirationDate,

@@ -37,6 +37,8 @@ namespace FabianoIO.ManagementCourses.Application.Handlers
             if (!ValidatComand(command))
                 return false;
 
+            //TO DO, move to controller e passar o price no command
+
             var course = await courseRepository.GetById(command.CourseId);
             if (course == null)
             {

@@ -1,4 +1,5 @@
 ﻿using FabianoIO.Core.Data;
+using FabianoIO.Core.Enums;
 using FabianoIO.ManagementCourses.Domain;
 
 namespace FabianoIO.Core.Interfaces.Repositories
@@ -11,5 +12,7 @@ namespace FabianoIO.Core.Interfaces.Repositories
         Task<bool> CreateProgressLessonByCourse(Guid courseId, Guid studentId);
         Task<bool> StartLesson(Guid lessonId, Guid studentId);
         Task<bool> FinishLesson(Guid lessonId, Guid studentId);
+        bool ExistProgress(Guid lessonId, Guid studentId);
+        EProgressLesson GetProgressStatusLesson(Guid lessonId, Guid studentId);
     }
 }

@@ -1,4 +1,5 @@
-﻿using FabianoIO.Core.Interfaces.Repositories;
+﻿using FabianoIO.Core.Enums;
+using FabianoIO.Core.Interfaces.Repositories;
 using FabianoIO.ManagementCourses.Application.Queries.ViewModels;
 
 namespace FabianoIO.ManagementCourses.Application.Queries
@@ -38,6 +39,18 @@ namespace FabianoIO.ManagementCourses.Application.Queries
                 TotalHours = c.TotalHours,
                 CourseId = c.CourseId
             }).ToList();
+        }
+
+        public bool ExistsProgress(Guid lessonId, Guid studentId)
+        {
+            return _lessonRepository.ExistProgress(lessonId, studentId);
+        }
+
+        public EProgressLesson GetProgressStatusLesson(Guid lessonId, Guid studentId)
+        {
+            var status = _lessonRepository.GetProgressStatusLesson(lessonId, studentId);
+
+            return status;
         }
     }
 }
