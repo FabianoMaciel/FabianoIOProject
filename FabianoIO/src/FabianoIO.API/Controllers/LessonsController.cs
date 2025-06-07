@@ -34,9 +34,23 @@ namespace FabianoIO.API.Controllers
             return CustomResponse(lessons);
         }
 
+        [Authorize(Roles = "STUDENT")]
+        [HttpGet("get-progress")]
+        [ProducesResponseType(typeof(IEnumerable<LessonProgressViewModel>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetProgress()
+        {
+            var progress = await lessonQuery.GetProgress(UserId);
+
+            return CustomResponse(progress);
+        }
+
         [Authorize(Roles = "ADMIN")]
         [HttpPost]
-        [ProducesResponseType(typeof(CourseViewModel), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(LessonViewModel), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]

@@ -8,6 +8,7 @@ namespace FabianoIO.Core.Interfaces.Repositories
     {
         Task<IEnumerable<Lesson>> GetAll();
         Task<IEnumerable<Lesson>> GetByCourseId(Guid courseId);
+        Task<IEnumerable<ProgressLesson>> GetProgression(Guid studentId);
         void Add(Lesson course);
         Task<bool> CreateProgressLessonByCourse(Guid courseId, Guid studentId);
         Task<bool> StartLesson(Guid lessonId, Guid studentId);

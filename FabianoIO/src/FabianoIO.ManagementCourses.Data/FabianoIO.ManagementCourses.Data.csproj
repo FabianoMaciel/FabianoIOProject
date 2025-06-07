@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\FabianoIO.Core\FabianoIO.Core.csproj" />
+    <ProjectReference Include="..\FabianoIO.ManagementCourses.Application\FabianoIO.ManagementCourses.Application.csproj" />
     <ProjectReference Include="..\FabianoIO.ManagementCourses.Domain\FabianoIO.ManagementCourses.Domain.csproj" />
   </ItemGroup>
 

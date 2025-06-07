@@ -17,5 +17,6 @@ namespace FabianoIO.ManagementCourses.Domain
         public Guid StudentId { get; set; }
         public Guid LessonId { get; set; }
         public EProgressLesson ProgressionStatus { get; set; }
+        public virtual Lesson Lesson { get; set; }
     }
 }

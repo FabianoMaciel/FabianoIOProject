@@ -7,10 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="AutoMapper\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\FabianoIO.Core\FabianoIO.Core.csproj" />
     <ProjectReference Include="..\FabianoIO.ManagementCourses.Domain\FabianoIO.ManagementCourses.Domain.csproj" />
   </ItemGroup>

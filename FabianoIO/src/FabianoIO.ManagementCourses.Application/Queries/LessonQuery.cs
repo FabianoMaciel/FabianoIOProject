@@ -1,6 +1,7 @@
 ﻿using FabianoIO.Core.Enums;
 using FabianoIO.Core.Interfaces.Repositories;
 using FabianoIO.ManagementCourses.Application.Queries.ViewModels;
+using FabianoIO.ManagementCourses.Domain;
 
 namespace FabianoIO.ManagementCourses.Application.Queries
 {
@@ -51,6 +52,13 @@ namespace FabianoIO.ManagementCourses.Application.Queries
             var status = _lessonRepository.GetProgressStatusLesson(lessonId, studentId);
 
             return status;
+        }
+
+        public async Task<IEnumerable<LessonProgressViewModel>> GetProgress(Guid studentId)
+        {
+            var progressions = await _lessonRepository.GetProgression(studentId);
+
+            return progressions.Select(c => new LessonProgressViewModel(c.Lesson.Name, c.ProgressionStatus.GetDescription()));
         }
     }
 }

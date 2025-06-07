@@ -80,5 +80,10 @@ namespace FabianoIO.ManagementCourses.Data.Repository
         {
             return _courseContext.ProgressLessons.FirstOrDefault(a => a.LessonId == lessonId && a.StudentId == studentId).ProgressionStatus;
         }
+
+        public async Task<IEnumerable<ProgressLesson>> GetProgression(Guid studentId)
+        {
+            return await _courseContext.ProgressLessons.Where(a => a.StudentId == studentId).Include(a => a.Lesson).ToListAsync();
+        }
     }
 }
