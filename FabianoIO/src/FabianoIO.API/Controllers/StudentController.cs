@@ -17,6 +17,11 @@ namespace FabianoIO.API.Controllers
                                 IPaymentQuery paymentQuery,
                                 INotifier notifier) : MainController(notifier)
     {
+        /// <summary>
+        /// Matrícula o aluno ao curso, e as aulas referente a esse curso
+        /// </summary>
+        /// <param name="courseId"></param>
+        /// <returns>Se o curso existe e o aluno já pagou o curso, retorna 201 aluno registrado</returns>
         [Authorize(Roles = "STUDENT")]
         [HttpPost("register-to-course/{courseId:guid}")]
         public async Task<IActionResult> RegisterToCourse(Guid courseId)

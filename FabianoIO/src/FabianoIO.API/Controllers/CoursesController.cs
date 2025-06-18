@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Mvc;
 using PlataformaEducacao.Api.DTOs;
 using System.Net;
 
+//TO DO, FINALIZAR O CURSO gerar certificado se todas as aulas foram finalziadas
+
 namespace FabianoIO.API.Controllers
 {
     [Route("api/[controller]")]
@@ -18,6 +20,10 @@ namespace FabianoIO.API.Controllers
                                 INotifier notifier) : MainController(notifier)
     {
 
+        /// <summary>
+        /// Retorna todos os cursos registrados
+        /// </summary>
+        /// <returns><see cref="IEnumerable{CourseViewModel}"/> Retorna uma lista de CourseViewModel</returns>
         [AllowAnonymous]
         [HttpGet()]
         [ProducesResponseType(typeof(IEnumerable<CourseViewModel>), StatusCodes.Status200OK)]
@@ -27,6 +33,11 @@ namespace FabianoIO.API.Controllers
             return CustomResponse(courses);
         }
 
+        /// <summary>
+        /// Retorna curso referente ao Id do parametro
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns><see cref="CourseViewModel"/>Retorna os dados do curso</returns>
         [AllowAnonymous]
         [HttpGet("{id:guid}")]
         [ProducesResponseType(typeof(CourseViewModel), StatusCodes.Status200OK)]
@@ -36,6 +47,11 @@ namespace FabianoIO.API.Controllers
             return CustomResponse(course);
         }
 
+        /// <summary>
+        /// Cria um novo curso
+        /// </summary>
+        /// <param name="course"></param>
+        /// <returns>Retorna que o curso foi criado, status 201</returns>
         [Authorize(Roles = "ADMIN")]
         [HttpPost("create")]
         [ProducesResponseType(typeof(CourseViewModel), StatusCodes.Status201Created)]
@@ -49,6 +65,12 @@ namespace FabianoIO.API.Controllers
             return CustomResponse(HttpStatusCode.Created);
         }
 
+        /// <summary>
+        /// Faz o pagamento do curso referenciado nos parametro 
+        /// </summary>
+        /// <param name="courseId"></param>
+        /// <param name="paymentViewModel"></param>
+        /// <returns>Retorna que o pagamento foi feito, status 201</returns>
         [Authorize(Roles = "STUDENT")]
         [HttpPost("{courseId:guid}/make-payment")]
         public async Task<IActionResult> MakePayment(Guid courseId, [FromBody] PaymentViewModel paymentViewModel)

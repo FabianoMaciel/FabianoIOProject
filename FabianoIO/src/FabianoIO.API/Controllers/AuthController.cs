@@ -21,6 +21,11 @@ namespace FabianoIO.API.Controllers
                                 IMediator _mediator,
                                 INotifier notifier) : MainController(notifier)
     {
+        /// <summary>
+        /// Registra novo usuário que pode ser um estudante ou um administrador
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns>Retorna os dados do usuário crido</returns>
         [HttpPost]
         [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -43,7 +48,11 @@ namespace FabianoIO.API.Controllers
             return CustomResponse(model);
         }
 
-
+        /// <summary>
+        /// Recebe os dados do usuário para login
+        /// </summary>
+        /// <param name="loginUser"></param>
+        /// <returns>Se os dados forem válidos, retorna dados do usuário logado com token</returns>
         [HttpPost]
         [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]

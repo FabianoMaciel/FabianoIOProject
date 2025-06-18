@@ -1,4 +1,5 @@
 ﻿using Microsoft.OpenApi.Models;
+using System.Reflection;
 
 namespace FabianoIO.API.Configurations
 {
@@ -12,6 +13,10 @@ namespace FabianoIO.API.Configurations
 
             builder.Services.AddSwaggerGen(s =>
             {
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                s.IncludeXmlComments(xmlPath);
+
                 s.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Version = "v1",
