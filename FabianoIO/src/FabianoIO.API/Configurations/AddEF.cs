@@ -29,7 +29,7 @@ namespace FabianoIO.API.Configurations
                 case EDatabases.SQLite:
                     builder.Services.AddDbContext<CoursesContext>(opt =>
                     {
-                        opt.UseSqlServer(builder.Configuration.GetConnectionString("SQLite"));
+                        opt.UseSqlite(builder.Configuration.GetConnectionString("SQLite"));
                     });
                     builder.Services.AddDbContext<StudentsContext>(options =>
                         options.UseSqlite(builder.Configuration.GetConnectionString("SQLite"))

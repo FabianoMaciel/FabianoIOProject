@@ -61,6 +61,12 @@ namespace FabianoIO.ManagementCourses.Data
         {
             builder.HasKey(a => a.Id);
             builder.ToTable("Courses");
+
+            builder.Property(a => a.Name)
+           .HasMaxLength(250);
+
+            builder.Property(a => a.Description)
+           .HasMaxLength(250);
         }
     }
 
@@ -70,6 +76,12 @@ namespace FabianoIO.ManagementCourses.Data
         {
             builder.HasKey(a => a.Id);
             builder.ToTable("Lessons");
+
+            builder.Property(a => a.Name)
+            .HasMaxLength(250);
+
+            builder.Property(a => a.Subject)
+           .HasMaxLength(500);
         }
     }
 

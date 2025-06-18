@@ -7,7 +7,7 @@ builder.Services.AddControllers();
 
 builder
     .AddJwt()
-    .AddContext(EDatabases.SQLServer)
+    .AddContext(EDatabases.SQLite)
     .AddRepositories()
     .AddServices()
     .AddSwaggerConfiguration();
