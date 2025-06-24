@@ -66,7 +66,7 @@ namespace FabianoIO.ManagementCourses.Application.Handlers
 
             await lessonRepository.CreateProgressLessonByCourse(request.CourseId, request.StudentId);
 
-            return await courseRepository.UnitOfWork.Commit();
+            return await lessonRepository.UnitOfWork.Commit();
         }
 
         private bool ValidatComand(Command command)
