@@ -1,0 +1,67 @@
+using FabianoIO.ManagementStudents.Aplication.Commands;
+using FabianoIO.ManagementStudents.Application.Commands;
+using FabianoIO.ManagementStudents.Application.Handler;
+using FabianoIO.ManagementStudents.Domain;
+using Moq;
+using Moq.AutoMock;
+
+namespace FabianoIO.ManagementStudents.Aplication.Tests
+{
+    public class UserCommandHandlerTests
+    {
+        private readonly AutoMocker _mocker;
+        private readonly UserCommandHandler _handler;
+
+        public UserCommandHandlerTests()
+        {
+            _mocker = new AutoMocker();
+            _handler = _mocker.CreateInstance<UserCommandHandler>();
+        }
+
+        [Fact]
+        public async Task AddUser_WithSuccess()
+        {
+            var userId = Guid.NewGuid();
+            // Arrange
+            var userStudent = new User(userId, "testFabiano", "xxxx", "yyy", "xxxx@hotmail.com", DateTime.Today.AddYears(-50), false);
+            var command = new AddUserCommand(userStudent.UserName, userStudent.IsAdmin, userStudent.UserName, userStudent.LastName, userStudent.DateOfBirth, userStudent.Email);
+
+            _mocker.GetMock<IUserRepository>().Setup(x => x.Add(userStudent));
+            _mocker.GetMock<IUserRepository>().Setup(x => x.UnitOfWork.Commit()).Returns(Task.FromResult(true));
+
+            // Act
+            var result = await _handler.Handle(command, CancellationToken.None);
+
+            // Assert
+            Assert.True(result);
+            _mocker.GetMock<IUserRepository>().Verify(r => r.Add(It.IsAny<User>()), Times.Once);
+            _mocker.GetMock<IUserRepository>().Verify(r => r.UnitOfWork.Commit(), Times.Once);
+        }
+
+
+        [Fact]
+        public async Task AddUser_CommandInvalid_Fail()
+        {
+            var userId = Guid.NewGuid();
+            // Arrange
+            var userStudent = new User(userId, "testFabiano", "xxxx", "yyy", "xxxx@hotmail.com", DateTime.Today.AddYears(-50), false);
+            var command = new AddUserCommand(string.Empty, userStudent.IsAdmin, string.Empty, string.Empty, userStudent.DateOfBirth, string.Empty);
+
+            // Act
+            var result = await _handler.Handle(command, CancellationToken.None);
+
+            // Assert
+            Assert.False(result);
+            _mocker.GetMock<IUserRepository>().Verify(r => r.Add(It.IsAny<User>()), Times.Never);
+            _mocker.GetMock<IUserRepository>().Verify(r => r.UnitOfWork.Commit(), Times.Never);
+            Assert.Contains(AddUserCommandValidation.UserNameError,
+                command.ValidationResult.Errors.Select(e => e.ErrorMessage));
+            Assert.Contains(AddUserCommandValidation.NameError, command.ValidationResult.Errors.Select(e => e.ErrorMessage));
+            Assert.Contains(AddUserCommandValidation.EmailError,
+                command.ValidationResult.Errors.Select(e => e.ErrorMessage));
+            Assert.Contains(AddUserCommandValidation.LastNameError,
+                command.ValidationResult.Errors.Select(e => e.ErrorMessage));
+            Assert.Equal(4, command.ValidationResult.Errors.Count);
+        }
+    }
+}

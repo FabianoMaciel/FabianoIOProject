@@ -34,23 +34,28 @@ namespace FabianoIO.ManagementStudents.Application.Commands
 
     public class AddUserCommandValidation : AbstractValidator<AddUserCommand>
     {
+        public static string UserNameError = "O campo StudentId não pode ser vazio.";
+        public static string NameError = "O campo CourseId não pode ser vazio.";
+        public static string LastNameError = "O campo CourseId não pode ser vazio.";
+        public static string EmailError = "O campo CourseId não pode ser vazio.";
+
         public AddUserCommandValidation()
         {
             RuleFor(c => c.UserName)
                 .NotEmpty()
-                .WithMessage("User Name is required");
+                .WithMessage(UserNameError);
 
             RuleFor(c => c.Name)
                 .NotEmpty()
-                .WithMessage("Name is needed");
+                .WithMessage(NameError);
 
             RuleFor(c => c.LastName)
                 .NotEmpty()
-                .WithMessage("Last Name is needed");
+                .WithMessage(LastNameError);
 
             RuleFor(c => c.Email)
                 .NotEmpty()
-                .WithMessage("Email is required");
+                .WithMessage(EmailError);
         }
     }
 }

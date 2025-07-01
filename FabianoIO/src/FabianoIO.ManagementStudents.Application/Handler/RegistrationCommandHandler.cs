@@ -15,14 +15,14 @@ public class RegistrationCommandHandler(IMediator _mediator,
         if (!ValidateCommand(request))
             return false;
 
-        var student = await _userRepository.GetById(request.StundentId);
+        var student = await _userRepository.GetById(request.StudentId);
         if (student == null)
         {
             await _mediator.Publish(new DomainNotification(request.MessageType, "Aluno não encontrado."), cancellationToken);
             return false;
         }
 
-        _registrationRepository.AddRegistration(request.StundentId, request.CourseId);
+        _registrationRepository.AddRegistration(request.StudentId, request.CourseId);
 
         return await _registrationRepository.UnitOfWork.Commit();
     }
