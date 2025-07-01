@@ -10,12 +10,21 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Bogus" Version="35.6.3" />
     <PackageReference Include="coverlet.collector" Version="6.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="8.0.17" />
     <PackageReference Include="Microsoft.CodeCoverage" Version="17.14.1" />
+    <PackageReference Include="Microsoft.Data.Sqlite.Core" Version="8.0.15" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="8.0.1" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
     <PackageReference Include="Microsoft.Testing.Extensions.CodeCoverage" Version="17.14.2" />
     <PackageReference Include="xunit" Version="2.5.3" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.5.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\FabianoIO.API\FabianoIO.API.csproj" />
+    <ProjectReference Include="..\..\..\src\FabianoIO.ManagementCourses.Application\FabianoIO.ManagementCourses.Application.csproj" />
   </ItemGroup>
 
   <ItemGroup>

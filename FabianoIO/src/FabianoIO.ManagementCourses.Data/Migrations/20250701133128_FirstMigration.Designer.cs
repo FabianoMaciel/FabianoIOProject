@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FabianoIO.ManagementCourses.Data.Migrations
 {
     [DbContext(typeof(CoursesContext))]
-    [Migration("20250618161739_FirstMigration")]
+    [Migration("20250701133128_FirstMigration")]
     partial class FirstMigration
     {
         /// <inheritdoc />

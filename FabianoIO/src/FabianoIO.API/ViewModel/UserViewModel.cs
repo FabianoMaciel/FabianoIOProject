@@ -58,6 +58,12 @@ namespace FabianoIO.API.ViewModel
             public UserTokenViewModel UserToken { get; set; }
         }
 
+        public class LoginResponseTestViewModel
+        {
+            public bool Success { get; set; }
+            public LoginResponseViewModel Data { get; set; } = new();
+        }
+
         public class ClaimViewModel
         {
             public string Value { get; set; }
