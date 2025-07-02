@@ -361,3 +361,5 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/FabianoIO/tests/FabianoIO.API.Tests/coverage-report
+/FabianoIO/nuget-temp.config
