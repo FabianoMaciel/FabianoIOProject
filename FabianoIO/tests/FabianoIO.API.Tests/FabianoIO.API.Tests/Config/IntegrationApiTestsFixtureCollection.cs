@@ -1,5 +1,6 @@
 ﻿using Bogus;
 using Bogus.DataSets;
+using FabianoIO.Core.Interfaces.Repositories;
 using FabianoIO.ManagementCourses.Data;
 using FabianoIO.ManagementStudents.Data;
 using Microsoft.AspNetCore.Hosting;
@@ -31,7 +32,7 @@ public class IntegrationTestsFixture : IDisposable
     public string Email { get; set; }
     public string PasswordConfirmed { get; set; }
     public string Token { get; set; }
-    public PaymentViewModel PaymentViewModel { get; set; }
+    public PaymentViewModel _paymentViewModel { get; set; }
     public Guid CourseId { get; set; }
     public Guid RegistrationId { get; set; }
     public Guid StudentId { get; set; }
@@ -46,7 +47,7 @@ public class IntegrationTestsFixture : IDisposable
         };
         Factory = new FabianoIOAppFactory();
         Client = Factory.CreateClient(options);
-        PaymentViewModel = new PaymentViewModel();
+        _paymentViewModel = new PaymentViewModel();
         var configuration = Factory.Services.GetRequiredService<IConfiguration>();
         ConnectionString = configuration.GetConnectionString("SQLite") ??
                            throw new InvalidOperationException("Connection string 'DefaultConnection' is not configured.");
@@ -60,13 +61,15 @@ public class IntegrationTestsFixture : IDisposable
         PasswordConfirmed = Password;
     }
 
-    public void GerarDadosCartao()
+    public PaymentViewModel GetPaymentData()
     {
         var faker = new Faker("pt_BR");
-        PaymentViewModel.CardName = faker.Name.FullName();
-        PaymentViewModel.CardNumber = faker.Finance.CreditCardNumber(CardType.Mastercard);
-        PaymentViewModel.CardExpirationDate = faker.Date.Future(1, DateTime.Now).ToString("MM/yy");
-        PaymentViewModel.CardCVV = faker.Finance.CreditCardCvv();
+        _paymentViewModel.CardName = faker.Name.FullName();
+        _paymentViewModel.CardNumber = faker.Finance.CreditCardNumber(CardType.Mastercard);
+        _paymentViewModel.CardExpirationDate = faker.Date.Future(1, DateTime.Now).ToString("MM/yy");
+        _paymentViewModel.CardCVV = faker.Finance.CreditCardCvv();
+
+        return _paymentViewModel;
     }
 
     public void SaveUserToken(string token)
@@ -91,6 +94,39 @@ public class IntegrationTestsFixture : IDisposable
         SaveUserToken(await response.Content.ReadAsStringAsync());
     }
 
+    public async Task<Guid> GetIdLessonRegistered()
+    {
+        var response = await Client.GetAsync("/api/Lessons");
+        response.EnsureSuccessStatusCode();
+
+        var data = await response.Content.ReadAsStringAsync();
+
+        var json = JsonSerializer.Deserialize<JsonElement>(data);
+        return json.GetProperty("data")[0].GetProperty("id").GetGuid();
+    }
+
+    public async Task<Guid> GetIdLessonNotRegistered()
+    {
+        var response = await Client.GetAsync("/api/Lessons");
+        response.EnsureSuccessStatusCode();
+
+        var data = await response.Content.ReadAsStringAsync();
+
+        var json = JsonSerializer.Deserialize<JsonElement>(data);
+        return json.GetProperty("data")[1].GetProperty("id").GetGuid();
+    }
+
+    public async Task<Guid> GetIdLessonCourseIdRegistered()
+    {
+        var response = await Client.GetAsync("/api/Lessons");
+        response.EnsureSuccessStatusCode();
+
+        var data = await response.Content.ReadAsStringAsync();
+
+        var json = JsonSerializer.Deserialize<JsonElement>(data);
+        return json.GetProperty("data")[0].GetProperty("courseId").GetGuid();
+    }
+
     public async Task<Guid> GetIdCourse()
     {
         var response = await Client.GetAsync("/api/Courses");
@@ -102,11 +138,27 @@ public class IntegrationTestsFixture : IDisposable
         return json.GetProperty("data")[0].GetProperty("id").GetGuid();
     }
 
-    public JsonElement ObterErros(string result)
+    public async Task RegisterStudent2Async()
     {
-        var json = JsonSerializer.Deserialize<JsonElement>(result);
-        return json.GetProperty("erros");
+        var courseLessonId = await GetIdLessonCourseIdRegistered();
+        var lessonId = await GetIdLessonRegistered();
+        var paymentViewModel = GetPaymentData();
+
+        var responsePayment = await Client.PostAsJsonAsync($"/api/courses/" + courseLessonId + "/make-payment", paymentViewModel);
+
+        bool existsProgress = false;
+        using (var scope = Factory.Services.CreateScope())
+        {
+            var lessonRepository = scope.ServiceProvider.GetRequiredService<ILessonRepository>();
+            
+            existsProgress = lessonRepository.ExistProgress(lessonId, StudentId);
+        }
+        if (!existsProgress)
+        {
+            var responseRegister = await Client.PostAsJsonAsync($"/api/student/register-to-course/{courseLessonId}", courseLessonId);
+        }
     }
+
     public void Dispose()
     {
         Factory.Dispose();

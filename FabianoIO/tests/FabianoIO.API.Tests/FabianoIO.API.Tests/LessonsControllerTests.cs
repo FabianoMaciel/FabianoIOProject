@@ -1,18 +1,32 @@
 using FabianoIO.Api.Tests.Config;
 using FabianoIO.ManagementCourses.Application.Queries.ViewModels;
+using System.Net;
 using System.Net.Http.Json;
 
 namespace FabianoIO.API.Tests
 {
     [TestCaseOrderer("FabianoIO.API.Tests.Config.PriorityOrderer", "FabianoIO.API.Tests")]
     [Collection(nameof(IntegrationApiTestsFixtureCollection))]
-    public class LessonsControllerTests
+    public class LessonsControllerTests : IClassFixture<IntegrationTestsFixture>, IAsyncLifetime
     {
         private readonly IntegrationTestsFixture _fixture;
 
         public LessonsControllerTests(IntegrationTestsFixture fixture)
         {
             _fixture = fixture;
+        }
+
+        public async Task InitializeAsync()
+        {
+            await _fixture.LoginApi("user2@fabianoio.com", "Teste@123");
+            _fixture.Client.SetToken(_fixture.Token);
+            await _fixture.RegisterStudent2Async();
+        }
+
+        public Task DisposeAsync()
+        {
+            // Se precisar limpar algo
+            return Task.CompletedTask;
         }
 
         [Fact]
@@ -38,6 +52,115 @@ namespace FabianoIO.API.Tests
 
             // Assert
             response.EnsureSuccessStatusCode();
+        }
+
+
+        [Fact]
+        public async Task StartClass_Forbidden_Failed()
+        {
+            // Arrange
+            var lessonId = await _fixture.GetIdLessonRegistered();
+
+            await _fixture.LoginApi();
+            _fixture.Client.SetToken(_fixture.Token);
+
+            // Act
+            var response = await _fixture.Client.PostAsJsonAsync($"/api/lessons/{lessonId}/start-class", lessonId);
+
+            await response.Content.ReadAsStringAsync();
+
+            // Assert
+            string message = await response.Content.ReadAsStringAsync();
+
+            Assert.Equal(HttpStatusCode.Forbidden, response.StatusCode);
+        }
+
+        [Fact]
+        public async Task StartClass_NotExist_Failed()
+        {
+            // Arrange
+            var lessonId = await _fixture.GetIdLessonNotRegistered();
+
+            // Act
+            var response = await _fixture.Client.PostAsJsonAsync($"/api/lessons/{lessonId}/start-class", lessonId);
+
+            await response.Content.ReadAsStringAsync();
+
+            // Assert
+            string message = await response.Content.ReadAsStringAsync();
+
+            Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+            Assert.Equal("\"Você ainda não está matriculado a essa aula.\"", message);
+        }
+
+        [Fact]
+        public async Task StartClass_Sucess()
+        {
+            // Arrange
+            var lessonId = await _fixture.GetIdLessonRegistered();
+
+            await _fixture.LoginApi("user2@fabianoio.com", "Teste@123");
+            _fixture.Client.SetToken(_fixture.Token);
+
+            // Act
+            var response = await _fixture.Client.PostAsJsonAsync($"/api/lessons/{lessonId}/start-class", lessonId);
+
+            await response.Content.ReadAsStringAsync();
+
+            // Assert
+            string message = await response.Content.ReadAsStringAsync();
+
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        }
+
+        [Fact]
+        public async Task FinishClass_Sucess()
+        {
+            // Arrange
+            var lessonId = await _fixture.GetIdLessonRegistered();
+            var paymentViewModel = _fixture.GetPaymentData();
+
+            // Act
+            var responseStart = await _fixture.Client.PostAsJsonAsync($"/api/lessons/{lessonId}/start-class", lessonId);
+            var response = await _fixture.Client.PostAsJsonAsync($"/api/lessons/{lessonId}/finish-class", lessonId);
+
+            await response.Content.ReadAsStringAsync();
+
+            // Assert
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        }
+
+
+        [Fact]
+        public async Task FinishClass_NotStarted_Fail()
+        {
+            // Arrange
+            var lessonId = await _fixture.GetIdLessonNotRegistered();
+
+            // Act
+            var response = await _fixture.Client.PostAsJsonAsync($"/api/lessons/{lessonId}/finish-class", lessonId);
+            string message = await response.Content.ReadAsStringAsync();
+            // Assert
+            Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+            Assert.Equal("\"Você ainda não teve progresso nesta aula.\"", message);
+        }
+
+        [Fact]
+        public async Task FinishClass_NotRegistered_Fail()
+        {
+            // Arrange
+            var lessonId = await _fixture.GetIdLessonNotRegistered();
+
+            // Act
+            var response = await _fixture.Client.PostAsJsonAsync($"/api/lessons/{lessonId}/finish-class", lessonId);
+
+            await response.Content.ReadAsStringAsync();
+
+            // Assert
+            string message = await response.Content.ReadAsStringAsync();
+
+            Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+            Assert.Equal("\"Você ainda não está matriculado a essa aula.\"", message);
         }
     }
 }

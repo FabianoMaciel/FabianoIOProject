@@ -17,7 +17,7 @@ namespace FabianoIO.ManagementCourses.Data.Repository
 
         public void Dispose()
         {
-            throw new NotImplementedException();
+           
         }
 
         public async Task<IEnumerable<Course>> GetAll()

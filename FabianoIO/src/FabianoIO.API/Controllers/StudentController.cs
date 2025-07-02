@@ -42,5 +42,31 @@ namespace FabianoIO.API.Controllers
 
             return CustomResponse(HttpStatusCode.Created);
         }
+
+        /// <summary>
+        /// Matrícula o aluno ao curso, e as aulas referente a esse curso
+        /// </summary>
+        /// <param name="courseId"></param>
+        /// <returns>Se o curso existe e o aluno já pagou o curso, retorna 201 aluno registrado</returns>
+        [Authorize(Roles = "STUDENT")]
+        [HttpGet("register-to-course/{courseId:guid}")]
+        public async Task<IActionResult> GetRegistration(Guid courseId)
+        {
+            var course = await courseQuery.GetById(courseId);
+            if (course == null)
+                return NotFound("Curso não encontrado.");
+
+            var paymentExists = await paymentQuery.PaymentExists(UserId, courseId);
+            if (!paymentExists)
+                return UnprocessableEntity("Você não possui acesso a esse curso.");
+
+            var commandRegistration = new AddRegistrationCommand(UserId, courseId);
+            await _mediator.Send(commandRegistration);
+
+            var commandCreationProgress = new CreateProgressByCourseCommand(courseId, UserId);
+            await _mediator.Send(commandCreationProgress);
+
+            return CustomResponse(HttpStatusCode.Created);
+        }
     }
 }

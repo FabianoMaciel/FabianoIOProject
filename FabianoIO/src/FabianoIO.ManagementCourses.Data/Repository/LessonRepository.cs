@@ -22,7 +22,7 @@ namespace FabianoIO.ManagementCourses.Data.Repository
 
         public void Dispose()
         {
-            throw new NotImplementedException();
+            
         }
 
         public async Task<IEnumerable<Lesson>> GetAll()
@@ -76,6 +76,7 @@ namespace FabianoIO.ManagementCourses.Data.Repository
         {
             return _courseContext.ProgressLessons.AsNoTracking().Any(a => a.LessonId == lessonId && a.StudentId == studentId);
         }
+
         public EProgressLesson GetProgressStatusLesson(Guid lessonId, Guid studentId)
         {
             return _courseContext.ProgressLessons.FirstOrDefault(a => a.LessonId == lessonId && a.StudentId == studentId).ProgressionStatus;

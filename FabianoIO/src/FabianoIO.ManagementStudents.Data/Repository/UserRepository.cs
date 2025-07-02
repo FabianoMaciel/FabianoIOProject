@@ -45,7 +45,7 @@ namespace FabianoIO.ManagementStudents.Data.Repository
 
         public void Dispose()
         {
-            throw new NotImplementedException();
+           
         }
     }
 }
