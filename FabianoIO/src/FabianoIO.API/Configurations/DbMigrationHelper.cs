@@ -4,9 +4,11 @@ using FabianoIO.ManagementStudents.Data;
 using FabianoIO.ManagementStudents.Domain;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics.CodeAnalysis;
 
 namespace FabianoIO.API.Configurations
 {
+    [ExcludeFromCodeCoverage]
     public static class DbMigrationHelperExtension
     {
         public static void UseDbMigrationHelper(this WebApplication app)
@@ -15,6 +17,7 @@ namespace FabianoIO.API.Configurations
         }
     }
 
+    [ExcludeFromCodeCoverage]
     public static class DbMigrationHelper
     {
         public static async Task EnsureSeedData(WebApplication application)

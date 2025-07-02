@@ -14,7 +14,7 @@ namespace FabianoIO.API.Controllers
     {
         private readonly INotifier _notifier = notifier;
 
-        protected Guid UserId => Guid.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? string.Empty);
+        public Guid UserId => Guid.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? string.Empty);
 
         protected bool IsValid()
         {

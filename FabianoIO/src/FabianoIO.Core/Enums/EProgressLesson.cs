@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 
 namespace FabianoIO.Core.Enums
@@ -13,6 +14,7 @@ namespace FabianoIO.Core.Enums
         Completed = 2
     }
 
+    [ExcludeFromCodeCoverage]
     public static class EnumExtensions
     {
         public static string GetDescription(this Enum value)

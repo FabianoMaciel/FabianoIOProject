@@ -1,11 +1,13 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using FabianoIO.Core.DomainObjects;
+using System.Diagnostics.CodeAnalysis;
 
 namespace FabianoIO.ManagementCourses.Data;
 
 public static class MediatorExtension
 {
+    [ExcludeFromCodeCoverage]
     public static async Task PublishDomainEvents(this IMediator mediator, DbContext context)
     {
         var domainEntities = context.ChangeTracker

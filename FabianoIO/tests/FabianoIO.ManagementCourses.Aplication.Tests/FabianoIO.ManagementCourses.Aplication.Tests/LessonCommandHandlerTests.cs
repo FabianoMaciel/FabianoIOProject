@@ -2,7 +2,6 @@
 using FabianoIO.ManagementCourses.Application.Commands;
 using FabianoIO.ManagementCourses.Application.Handlers;
 using FabianoIO.ManagementCourses.Domain;
-using MediatR;
 using Moq;
 using Moq.AutoMock;
 

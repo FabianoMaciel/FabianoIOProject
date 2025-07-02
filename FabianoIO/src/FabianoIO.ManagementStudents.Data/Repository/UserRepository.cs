@@ -33,15 +33,6 @@ namespace FabianoIO.ManagementStudents.Data.Repository
         {
             _dbSet.Add(user);
         }
-        public void Delete(User User)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Update(User User)
-        {
-            throw new NotImplementedException();
-        }
 
         public void Dispose()
         {

@@ -1,7 +1,7 @@
-using FabianoIO.ManagementStudents.Aplication.Commands;
 using FabianoIO.ManagementStudents.Application.Commands;
 using FabianoIO.ManagementStudents.Application.Handler;
 using FabianoIO.ManagementStudents.Domain;
+using FluentAssertions;
 using Moq;
 using Moq.AutoMock;
 
@@ -62,6 +62,67 @@ namespace FabianoIO.ManagementStudents.Aplication.Tests
             Assert.Contains(AddUserCommandValidation.LastNameError,
                 command.ValidationResult.Errors.Select(e => e.ErrorMessage));
             Assert.Equal(4, command.ValidationResult.Errors.Count);
+        }
+
+        [Fact]
+        public void IsValid_ShouldReturnTrue_WhenCommandIsValid()
+        {
+            // Arrange
+            var cmd = new AddUserCommand(
+                userName: "usuario123",
+                isAdmin: false,
+                name: "Fabiano",
+                lastName: "Maciel",
+                dateOfBirth: new DateTime(1990, 1, 1),
+                email: "fabiano@example.com"
+            );
+
+            // Act
+            var result = cmd.IsValid();
+
+            // Assert
+            result.Should().BeTrue();
+            cmd.ValidationResult.Errors.Should().BeEmpty();
+        }
+
+        [Fact]
+        public void IsValid_ShouldReturnFalse_WhenUserNameIsEmpty()
+        {
+            var cmd = new AddUserCommand(
+                userName: "",
+                isAdmin: false,
+                name: "Fabiano",
+                lastName: "Maciel",
+                dateOfBirth: new DateTime(1990, 1, 1),
+                email: "fabiano@example.com"
+            );
+
+            var result = cmd.IsValid();
+
+            result.Should().BeFalse();
+            cmd.ValidationResult.Errors.Should().ContainSingle(e => e.PropertyName == "UserName" && e.ErrorMessage == AddUserCommandValidation.UserNameError);
+        }
+
+        [Fact]
+        public void IsValid_ShouldReturnFalse_WhenRequiredFieldsAreEmpty()
+        {
+            var cmd = new AddUserCommand(
+                userName: "",
+                isAdmin: false,
+                name: "",
+                lastName: "",
+                dateOfBirth: new DateTime(1990, 1, 1),
+                email: ""
+            );
+
+            var result = cmd.IsValid();
+
+            result.Should().BeFalse();
+            var errors = cmd.ValidationResult.Errors;
+            errors.Should().Contain(e => e.PropertyName == "UserName");
+            errors.Should().Contain(e => e.PropertyName == "Name");
+            errors.Should().Contain(e => e.PropertyName == "LastName");
+            errors.Should().Contain(e => e.PropertyName == "Email");
         }
     }
 }

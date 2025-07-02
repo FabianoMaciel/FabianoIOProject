@@ -1,8 +1,10 @@
 ﻿using Microsoft.OpenApi.Models;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 
 namespace FabianoIO.API.Configurations
 {
+    [ExcludeFromCodeCoverage]
     public static class SwaggerConfig
     {
         public static WebApplicationBuilder AddSwaggerConfiguration(this WebApplicationBuilder builder)
