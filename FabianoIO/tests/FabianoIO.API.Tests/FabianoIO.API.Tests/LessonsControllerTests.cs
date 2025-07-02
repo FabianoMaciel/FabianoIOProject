@@ -20,13 +20,8 @@ namespace FabianoIO.API.Tests
         {
             await _fixture.LoginApi("user2@fabianoio.com", "Teste@123");
             _fixture.Client.SetToken(_fixture.Token);
-            await _fixture.RegisterStudent2Async();
-        }
 
-        public Task DisposeAsync()
-        {
-            // Se precisar limpar algo
-            return Task.CompletedTask;
+            await _fixture.RegisterStudent2Async();
         }
 
         [Fact]
@@ -76,15 +71,15 @@ namespace FabianoIO.API.Tests
         }
 
         [Fact]
-        public async Task StartClass_NotExist_Failed()
+        public async Task StartClass_NotRegistered_Failed()
         {
             // Arrange
-            var lessonId = await _fixture.GetIdLessonNotRegistered();
+            await _fixture.LoginApi("user1@fabianoio.com", "Teste@123");
+            _fixture.Client.SetToken(_fixture.Token);
+            var lessonId = Guid.NewGuid();
 
             // Act
             var response = await _fixture.Client.PostAsJsonAsync($"/api/lessons/{lessonId}/start-class", lessonId);
-
-            await response.Content.ReadAsStringAsync();
 
             // Assert
             string message = await response.Content.ReadAsStringAsync();
@@ -97,10 +92,7 @@ namespace FabianoIO.API.Tests
         public async Task StartClass_Sucess()
         {
             // Arrange
-            var lessonId = await _fixture.GetIdLessonRegistered();
-
-            await _fixture.LoginApi("user2@fabianoio.com", "Teste@123");
-            _fixture.Client.SetToken(_fixture.Token);
+            var lessonId = await _fixture.GetIdLessonNotStarted();
 
             // Act
             var response = await _fixture.Client.PostAsJsonAsync($"/api/lessons/{lessonId}/start-class", lessonId);
@@ -135,7 +127,11 @@ namespace FabianoIO.API.Tests
         public async Task FinishClass_NotStarted_Fail()
         {
             // Arrange
-            var lessonId = await _fixture.GetIdLessonNotRegistered();
+            await _fixture.LoginApi("user1@fabianoio.com", "Teste@123");
+            _fixture.Client.SetToken(_fixture.Token);
+   
+            await _fixture.RegisterStudent1Lesson1Async();
+            var lessonId = await _fixture.GetIdLessonNotStarted();
 
             // Act
             var response = await _fixture.Client.PostAsJsonAsync($"/api/lessons/{lessonId}/finish-class", lessonId);
@@ -149,6 +145,9 @@ namespace FabianoIO.API.Tests
         public async Task FinishClass_NotRegistered_Fail()
         {
             // Arrange
+            await _fixture.LoginApi("user1@fabianoio.com", "Teste@123");
+            _fixture.Client.SetToken(_fixture.Token);
+
             var lessonId = await _fixture.GetIdLessonNotRegistered();
 
             // Act
@@ -161,6 +160,11 @@ namespace FabianoIO.API.Tests
 
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
             Assert.Equal("\"Você ainda não está matriculado a essa aula.\"", message);
+        }
+
+        public Task DisposeAsync()
+        {
+           return Task.CompletedTask;
         }
     }
 }

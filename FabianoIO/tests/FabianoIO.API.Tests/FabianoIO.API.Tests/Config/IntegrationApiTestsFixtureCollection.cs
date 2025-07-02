@@ -105,7 +105,7 @@ public class IntegrationTestsFixture : IDisposable
         return json.GetProperty("data")[0].GetProperty("id").GetGuid();
     }
 
-    public async Task<Guid> GetIdLessonNotRegistered()
+    public async Task<Guid> GetIdLessonNotStarted()
     {
         var response = await Client.GetAsync("/api/Lessons");
         response.EnsureSuccessStatusCode();
@@ -114,6 +114,17 @@ public class IntegrationTestsFixture : IDisposable
 
         var json = JsonSerializer.Deserialize<JsonElement>(data);
         return json.GetProperty("data")[1].GetProperty("id").GetGuid();
+    }
+
+    public async Task<Guid> GetIdLessonNotRegistered()
+    {
+        var response = await Client.GetAsync("/api/Lessons");
+        response.EnsureSuccessStatusCode();
+
+        var data = await response.Content.ReadAsStringAsync();
+
+        var json = JsonSerializer.Deserialize<JsonElement>(data);
+        return json.GetProperty("data")[0].GetProperty("id").GetGuid();
     }
 
     public async Task<Guid> GetIdLessonCourseIdRegistered()
@@ -151,6 +162,27 @@ public class IntegrationTestsFixture : IDisposable
         {
             var lessonRepository = scope.ServiceProvider.GetRequiredService<ILessonRepository>();
             
+            existsProgress = lessonRepository.ExistProgress(lessonId, StudentId);
+        }
+        if (!existsProgress)
+        {
+            var responseRegister = await Client.PostAsJsonAsync($"/api/student/register-to-course/{courseLessonId}", courseLessonId);
+        }
+    }
+
+    public async Task RegisterStudent1Lesson1Async()
+    {
+        var courseLessonId = await GetIdLessonCourseIdRegistered();
+        var lessonId = await GetIdLessonRegistered();
+        var paymentViewModel = GetPaymentData();
+
+        var responsePayment = await Client.PostAsJsonAsync($"/api/courses/" + courseLessonId + "/make-payment", paymentViewModel);
+
+        bool existsProgress = false;
+        using (var scope = Factory.Services.CreateScope())
+        {
+            var lessonRepository = scope.ServiceProvider.GetRequiredService<ILessonRepository>();
+
             existsProgress = lessonRepository.ExistProgress(lessonId, StudentId);
         }
         if (!existsProgress)
